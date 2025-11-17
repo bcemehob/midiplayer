@@ -1,5 +1,8 @@
-## Start server:
+# Backend
 
+is available on http://localhost:3000
+
+## Start server:
 
 ```
 node script.js
@@ -7,7 +10,7 @@ node script.js
 
 # Frontend
 
-frontend is available on http://localhost:3000
+Frontend is available on http://localhost:5174
 
 
 

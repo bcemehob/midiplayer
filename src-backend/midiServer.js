@@ -10,10 +10,10 @@ let currentPlayer = null
 function createMidiServer() {
   const app = express()
   app.use(express.static("public"))
-  app.post("/upload", storeFile, returnFileName)
-  app.get("/start", startBroadcastPlayback)
-  app.get("/stop", stopPlayback)
-  app.get("/events", registerUiClient)
+  app.post("/api/upload", storeFile, returnFileName)
+  app.get("/api/start", startBroadcastPlayback)
+  app.get("/api/stop", stopPlayback)
+  app.get("/api/events", registerUiClient)
   return app
 }
 

@@ -29,13 +29,13 @@
       const formData = new FormData()
       formData.append("midi", fileInput.files[0])
 
-      const res = await fetch("/upload", { method: "POST", body: formData })
+      const res = await fetch("/api/upload", { method: "POST", body: formData })
       const data = await res.json()
       fileName = data.file
       eventsBox.textContent = `Uploaded: ${fileName}\n`
 
       // Start listening to SSE
-      const evtSource = new EventSource("/events")
+      const evtSource = new EventSource("/api/events")
       evtSource.onmessage = (e) => {
         eventsBox.textContent += e.data + "\n"
       };
@@ -43,11 +43,11 @@
 
     startBtn.onclick = async () => {
       if (!fileName) return alert("Upload a file first!")
-      await fetch("/start?file=" + encodeURIComponent(fileName))
+      await fetch("/api/start?file=" + encodeURIComponent(fileName))
     };
 
     stopBtn.onclick = async () => {
-      await fetch("/stop")
+      await fetch("/api/stop")
     };
   </script>
 </body>
