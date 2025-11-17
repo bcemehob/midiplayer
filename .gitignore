@@ -2,3 +2,4 @@ node_modules/
 dist/
 pkg-dist/
 .DS_Store
+uploads/

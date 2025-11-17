@@ -1,7 +1,6 @@
 {
   "name": "midiplayer",
   "version": "1.0.0",
-
   "description": "",
   "main": "index.js",
   "bin": "player.js",
@@ -12,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pkg": "^5.8.1",
     "express": "^5.1.0",
-     "play-sound": "^1.1.6",
-    "midi-player-js": "^2.0.16"
+    "midi-player-js": "^2.0.16",
+    "multer": "^2.0.2",
+    "pkg": "^5.8.1"
   },
   "pkg": {
     "scripts": "dist/js/*.js",

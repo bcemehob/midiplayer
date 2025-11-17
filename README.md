@@ -1,16 +1,14 @@
-# Frontend
-
-
-
-# Backend
-
-
 ## Start server:
 
 
 ```
-node player.js
+node script.js
 ```
+
+# Frontend
+
+frontend is available on http://localhost:3000
+
 
 
 
