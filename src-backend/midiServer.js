@@ -14,7 +14,6 @@ function createMidiServer() {
   const app = express()
   app.use(express.static("public"))
   app.use("/files", express.static(path.join(process.cwd(), "extracted")))
-  app.post("/api/upload", storeFile, returnFileName)
   app.post("/api/upload-archive", storeArchive, handleArchive)
   app.get("/api/start", startBroadcastPlayback)
   app.get("/api/stop", stopPlayback)
@@ -57,15 +56,13 @@ const registerUiClient = (req, res) => {
   })
 }
 
-const storeFile = upload.single("midi")
-const returnFileName = (req, res) => res.json({ file: req.file.filename })
-const storeArchive = upload.single("archive")
 const stopPlayback = (_, res) => {
   if (currentPlayer) currentPlayer.stop()
-  res.send("Playback stopped")
+    res.send("Playback stopped")
 }
 
 
+const storeArchive = upload.single("archive")
 const handleArchive = async (req, res) => {
   try {
     const zipPath = req.file.path
