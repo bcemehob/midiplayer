@@ -16,7 +16,7 @@
     const formData = new FormData()
     formData.append("archive", file)
 
-    const res = await fetch("/api/upload-archive", {
+    const res = await fetch("/api/upload", {
       method: "POST",
       body: formData,
     })

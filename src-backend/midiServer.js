@@ -14,7 +14,7 @@ function createMidiServer() {
   const app = express()
   app.use(express.static("public"))
   app.use("/files", express.static(path.join(process.cwd(), "extracted")))
-  app.post("/api/upload-archive", storeArchive, handleArchive)
+  app.post("/api/upload", storeArchive, handleArchive)
   app.get("/api/start", startBroadcastPlayback)
   app.get("/api/stop", stopPlayback)
   app.get("/api/events", registerUiClient)
