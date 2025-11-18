@@ -1,28 +1,41 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+  // @ts-nocheck
 
-    const dispatch = createEventDispatcher();
-    let files; // this will be a FileList
-    let file;
+  import { createEventDispatcher } from "svelte"
 
-    async function upload() {
-        file = files?.[0];
-        if (!file) {
-            alert("Select a MIDI file first!");
-            return;
-        }
-        const formData = new FormData();
-        formData.append("midi", file);
+  const dispatch = createEventDispatcher()
+  let files // this will be a FileList
+  let file
 
-        const res = await fetch("/api/upload", {
-            method: "POST",
-            body: formData,
-        });
-        const data = await res.json();
-
-        dispatch("uploaded", { fileName: data.file });
+  async function upload() {
+    file = files?.[0]
+    if (!file) {
+      alert("Select file first!")
+      return
     }
+    const formData = new FormData()
+    formData.append("archive", file)
+
+    const res = await fetch("/api/upload-archive", {
+      method: "POST",
+      body: formData,
+    })
+    const data = await res.json()
+    const audioResponse = await fetch(
+      `/api/download/${encodeURIComponent(data.folder)}/${encodeURIComponent(data.audioFile)}`,
+    )
+    const blob = await new Response(audioResponse.body).blob();
+    let audioUrl = URL.createObjectURL(blob)
+    console.log("DATA", data, audioResponse, audioUrl)
+
+    dispatch("uploaded", {
+      fileName: data.midiFile,
+      folderName: data.folder,
+      audioUrl
+    })
+  }
+
 </script>
 
-<input type="file" bind:files={files} accept=".mid,.midi" />
+<input type="file" bind:files accept=".zip" />
 <button on:click={upload}>Upload</button>
