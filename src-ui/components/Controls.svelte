@@ -21,7 +21,7 @@
   }
 
   async function analyze() {
-    await fetch(`/api/analyze?file=${encodeURIComponent(fileName)}&folder=${encodeURIComponent(folderName)}`)
+    await fetch(`/api/analyze/${encodeURIComponent(folderName)}/${encodeURIComponent(fileName)}`)
     audioEl.pause()
   }
 </script>

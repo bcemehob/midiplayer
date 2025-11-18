@@ -15,17 +15,6 @@ const paths = {
   timestamp: null
 }
 
-function download(req, res) {
-  const { folder, file } = req.params
-  const filePath = path.join(process.cwd(), Properties.storedFoldersName, folder, file)
-
-  res.download(filePath, file, (err) => {
-    if (err) {
-      res.status(404).json({ error: "File not found" })
-    }
-  })
-}
-
 async function handleArchive(req, res) {
   try {
     const zipPath = req.file.path
@@ -76,9 +65,23 @@ function storeFile(entry) {
   }
 }
 
-async function getMidiFile(folder, file) {
-  const filePath = path.join(process.cwd(), "extracted", folder, file)
-  return await fsp.readFile(filePath)  
+async function getMidiFile(req) {
+  const { folder, file } = req.params
+  return await fsp.readFile(filePath(folder, file))
 }
+
+function download(req, res) {
+  const { folder, file } = req.params
+  res.download(filePath(folder, file), file, (err) => {
+    if (err) {
+      res.status(404).json({ error: "File not found" })
+    }
+  })
+}
+
+function filePath(folder, file) {
+  return path.join(process.cwd(), Properties.storedFoldersName, folder, file)
+}
+
 
 module.exports = { download, handleArchive, storeArchive, folderPath, getMidiFile }
