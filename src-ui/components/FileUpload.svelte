@@ -37,5 +37,4 @@
 
 </script>
 
-<input type="file" bind:files accept=".zip" />
-<button on:click={upload}>Upload</button>
+<input type="file" bind:files accept=".zip" on:change={upload}/>
