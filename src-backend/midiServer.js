@@ -1,10 +1,7 @@
 const express = require("express")
-const { Player } = require("midi-player-js")
 const { download, handleArchive, storeArchive, folderPath } = require("./FileHelper")
-const Properties = require("./Properties")
 const { registerUiClient, emitEvent } = require("./SSEHelper")
-
-let currentPlayer = null
+const { play, stop } = require("./MidiHelper")
 
 function createMidiServer() {
   const app = express()
@@ -13,23 +10,9 @@ function createMidiServer() {
   app.post("/api/upload", storeArchive, handleArchive)
   app.get("/api/download/:folder/:file", download)
   app.get("/api/events", registerUiClient)
-  app.get("/api/start", startBroadcastPlayback)
-  app.get("/api/stop", stopPlayback)
+  app.get("/api/start", (req, res) => play(req, res, emitEvent))
+  app.get("/api/stop", stop)
   return app
-}
-
-const startBroadcastPlayback = (req, res) => {
-  const file = `${Properties.storedFoldersName}/${req.query.folder}/${req.query.file}`
-  currentPlayer = new Player(emitEvent)
-  currentPlayer.loadFile(file)
-  currentPlayer.play()
-  res.send("Playback started")
-}
-
-
-const stopPlayback = (_, res) => {
-  if (currentPlayer) currentPlayer.stop()
-    res.send("Playback stopped")
 }
 
 module.exports = { createMidiServer }
