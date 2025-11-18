@@ -11,7 +11,7 @@
       alert("Upload a file first!")
       return
     }
-    await fetch(`/api/start?file=${encodeURIComponent(fileName)}&folder=${encodeURIComponent(folderName)}`)
+    await fetch(`/api/start/${encodeURIComponent(folderName)}/${encodeURIComponent(fileName)}`)
     audioEl.play()
   }
 

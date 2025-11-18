@@ -10,8 +10,8 @@ function createMidiServer() {
   app.post("/api/upload", storeArchive, handleArchive)
   app.get("/api/download/:folder/:file", download)
   app.get("/api/analyze/:folder/:file", analyzeMidi)
+  app.get("/api/start/:folder/:file", (req, res) => play(req, res, emitEvent))
   app.get("/api/events", registerUiClient)
-  app.get("/api/start", (req, res) => play(req, res, emitEvent))
   app.get("/api/stop", stop)
   return app
 }

@@ -4,9 +4,10 @@ const { Midi } = require("@tonejs/midi")
 let currentPlayer = null
 
 function play (req, res, emitEvent) {
-  const file = `${Properties.storedFoldersName}/${req.query.folder}/${req.query.file}`
+  const { folder, file } = req.params
+  const filePath = `${Properties.storedFoldersName}/${folder}/${file}`
   currentPlayer = new Player(emitEvent)
-  currentPlayer.loadFile(file)
+  currentPlayer.loadFile(filePath)
   currentPlayer.play()
   res.send("Playback started")
 }
