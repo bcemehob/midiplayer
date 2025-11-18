@@ -19,11 +19,17 @@
     await fetch("/api/stop")
     audioEl.pause()
   }
+
+  async function analyze() {
+    await fetch(`/api/analyze?file=${encodeURIComponent(fileName)}&folder=${encodeURIComponent(folderName)}`)
+    audioEl.pause()
+  }
 </script>
 
 <div>
   <button on:click={start}>Start</button>
   <button on:click={stop}>Stop</button>
+  <button on:click={analyze}>Analyze</button>
 </div>
 <div>
   <audio bind:this={audioEl} src={audioUrl} controls></audio>

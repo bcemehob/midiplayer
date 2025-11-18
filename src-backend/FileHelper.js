@@ -1,5 +1,6 @@
 const path = require("path")
 const fs = require("fs")
+const fsp = require("fs/promises")
 const unzipper = require("unzipper")
 const multer = require("multer")
 const Properties = require("./Properties")
@@ -75,4 +76,9 @@ function storeFile(entry) {
   }
 }
 
-module.exports = { download, handleArchive, storeArchive, folderPath }
+async function getMidiFile(folder, file) {
+  const filePath = path.join(process.cwd(), "extracted", folder, file)
+  return await fsp.readFile(filePath)  
+}
+
+module.exports = { download, handleArchive, storeArchive, folderPath, getMidiFile }

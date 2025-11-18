@@ -1,0 +1,125 @@
+0, 0, Header, 1, 3, 480
+1, 0, Start_track
+1, 0, Title_t, "samplex"
+1, 0, SMPTE_offset, 96, 0, 0, 0, 0
+1, 0, Time_signature, 4, 2, 24, 8
+1, 0, Tempo, 500000
+1, 1920, Time_signature, 3, 2, 24, 8
+1, 1920, Tempo, 500000
+1, 4800, Time_signature, 4, 2, 24, 8
+1, 4800, Tempo, 543813
+1, 5280, Tempo, 666443
+1, 6480, Tempo, 744378
+1, 6960, Tempo, 860485
+1, 6960, End_track
+2, 0, Start_track
+2, 0, Title_t, "Drums"
+2, 0, Note_on_c, 0, 48, 80
+2, 120, Note_off_c, 0, 48, 0
+2, 240, Note_on_c, 0, 48, 80
+2, 360, Note_off_c, 0, 48, 0
+2, 480, Note_on_c, 0, 49, 80
+2, 600, Note_off_c, 0, 49, 0
+2, 960, Note_on_c, 0, 48, 80
+2, 1080, Note_off_c, 0, 48, 0
+2, 1440, Note_on_c, 0, 49, 80
+2, 1560, Note_off_c, 0, 49, 0
+2, 1920, Note_on_c, 0, 48, 80
+2, 2040, Note_off_c, 0, 48, 0
+2, 2400, Note_on_c, 0, 49, 80
+2, 2520, Note_off_c, 0, 49, 0
+2, 2880, Note_on_c, 0, 49, 80
+2, 3000, Note_off_c, 0, 49, 0
+2, 3360, Note_on_c, 0, 48, 80
+2, 3480, Note_off_c, 0, 48, 0
+2, 3840, Note_on_c, 0, 49, 80
+2, 3960, Note_off_c, 0, 49, 0
+2, 4320, Note_on_c, 0, 49, 80
+2, 4440, Note_off_c, 0, 49, 0
+2, 4800, Note_on_c, 0, 48, 80
+2, 4920, Note_off_c, 0, 48, 0
+2, 5040, Note_on_c, 0, 48, 96
+2, 5160, Note_off_c, 0, 48, 0
+2, 5280, Note_on_c, 0, 49, 80
+2, 5400, Note_off_c, 0, 49, 0
+2, 5760, Note_on_c, 0, 48, 80
+2, 5880, Note_off_c, 0, 48, 0
+2, 6000, Note_on_c, 0, 48, 80
+2, 6120, Note_off_c, 0, 48, 0
+2, 6240, Note_on_c, 0, 49, 80
+2, 6360, Note_off_c, 0, 49, 0
+2, 6720, Note_on_c, 0, 48, 80
+2, 6840, Note_off_c, 0, 48, 0
+2, 6960, Note_on_c, 0, 48, 80
+2, 7020, Note_off_c, 0, 48, 0
+2, 7200, Note_on_c, 0, 49, 80
+2, 7320, Note_off_c, 0, 49, 0
+2, 7320, End_track
+3, 0, Start_track
+3, 0, Title_t, "SYNTH"
+3, 0, Note_on_c, 0, 84, 83
+3, 60, Note_off_c, 0, 84, 0
+3, 240, Note_on_c, 0, 84, 83
+3, 300, Note_off_c, 0, 84, 0
+3, 480, Note_on_c, 0, 84, 83
+3, 540, Note_off_c, 0, 84, 0
+3, 720, Note_on_c, 0, 84, 83
+3, 780, Note_off_c, 0, 84, 0
+3, 960, Note_on_c, 0, 79, 83
+3, 1020, Note_off_c, 0, 79, 0
+3, 1200, Note_on_c, 0, 79, 83
+3, 1260, Note_off_c, 0, 79, 0
+3, 1440, Note_on_c, 0, 79, 83
+3, 1500, Note_off_c, 0, 79, 0
+3, 1680, Note_on_c, 0, 79, 83
+3, 1740, Note_off_c, 0, 79, 0
+3, 1920, Note_on_c, 0, 88, 83
+3, 1980, Note_off_c, 0, 88, 0
+3, 2160, Note_on_c, 0, 88, 83
+3, 2220, Note_off_c, 0, 88, 0
+3, 2400, Note_on_c, 0, 88, 83
+3, 2460, Note_off_c, 0, 88, 0
+3, 2640, Note_on_c, 0, 88, 83
+3, 2700, Note_off_c, 0, 88, 0
+3, 2880, Note_on_c, 0, 81, 83
+3, 2940, Note_off_c, 0, 81, 0
+3, 3120, Note_on_c, 0, 81, 83
+3, 3180, Note_off_c, 0, 81, 0
+3, 3360, Note_on_c, 0, 81, 83
+3, 3420, Note_off_c, 0, 81, 0
+3, 3600, Note_on_c, 0, 81, 83
+3, 3660, Note_off_c, 0, 81, 0
+3, 3840, Note_on_c, 0, 89, 83
+3, 3900, Note_off_c, 0, 89, 0
+3, 4080, Note_on_c, 0, 89, 83
+3, 4140, Note_off_c, 0, 89, 0
+3, 4320, Note_on_c, 0, 89, 83
+3, 4380, Note_off_c, 0, 89, 0
+3, 4560, Note_on_c, 0, 89, 83
+3, 4620, Note_off_c, 0, 89, 0
+3, 4800, Note_on_c, 0, 83, 83
+3, 4860, Note_off_c, 0, 83, 0
+3, 5040, Note_on_c, 0, 83, 83
+3, 5100, Note_off_c, 0, 83, 0
+3, 5280, Note_on_c, 0, 83, 83
+3, 5340, Note_off_c, 0, 83, 0
+3, 5520, Note_on_c, 0, 83, 83
+3, 5580, Note_off_c, 0, 83, 0
+3, 5760, Note_on_c, 0, 91, 83
+3, 5820, Note_off_c, 0, 91, 0
+3, 6000, Note_on_c, 0, 91, 83
+3, 6060, Note_off_c, 0, 91, 0
+3, 6240, Note_on_c, 0, 91, 83
+3, 6300, Note_off_c, 0, 91, 0
+3, 6480, Note_on_c, 0, 91, 83
+3, 6540, Note_off_c, 0, 91, 0
+3, 6720, Note_on_c, 0, 83, 83
+3, 6780, Note_off_c, 0, 83, 0
+3, 6960, Note_on_c, 0, 83, 83
+3, 7020, Note_off_c, 0, 83, 0
+3, 7200, Note_on_c, 0, 83, 83
+3, 7260, Note_off_c, 0, 83, 0
+3, 7440, Note_on_c, 0, 83, 83
+3, 7500, Note_off_c, 0, 83, 0
+3, 7500, End_track
+0, 0, End_of_file

@@ -1,7 +1,7 @@
 const express = require("express")
-const { download, handleArchive, storeArchive, folderPath } = require("./FileHelper")
+const { download, handleArchive, storeArchive, folderPath, getMidiFile } = require("./FileHelper")
 const { registerUiClient, emitEvent } = require("./SSEHelper")
-const { play, stop } = require("./MidiHelper")
+const { play, stop, analyze } = require("./MidiHelper")
 
 function createMidiServer() {
   const app = express()
@@ -12,7 +12,13 @@ function createMidiServer() {
   app.get("/api/events", registerUiClient)
   app.get("/api/start", (req, res) => play(req, res, emitEvent))
   app.get("/api/stop", stop)
+  app.get("/api/analyze", analyzeMidi)
   return app
+}
+
+async function analyzeMidi(req, res) {
+  const file = await getMidiFile(req.query.folder, req.query.file)
+  res.json(analyze(file))
 }
 
 module.exports = { createMidiServer }
