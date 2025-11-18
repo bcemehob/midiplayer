@@ -17,6 +17,7 @@
 
   async function stop() {
     await fetch("/api/stop")
+    audioEl.pause()
   }
 </script>
 
