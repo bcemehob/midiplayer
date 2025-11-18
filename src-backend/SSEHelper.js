@@ -12,6 +12,10 @@ function registerUiClient(req, res) {
 }
 
 function emitEvent(event) {
+  if (event.name === 'Note off') {
+    console.log("Note off event skipped")
+    return 
+  }
   console.log("event", event)
   clients.forEach(client => client.write(`data: ${JSON.stringify(event)}\n\n`))
 }
