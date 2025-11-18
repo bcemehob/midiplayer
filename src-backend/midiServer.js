@@ -4,6 +4,7 @@ const unzipper = require("unzipper")
 const path = require("path")
 const fs = require("fs")
 const { Player } = require("midi-player-js")
+const { download } = require("./FileHelper")
 
 let clients = []
 const upload = multer({ dest: "uploads/" })
@@ -18,17 +19,7 @@ function createMidiServer() {
   app.get("/api/start", startBroadcastPlayback)
   app.get("/api/stop", stopPlayback)
   app.get("/api/events", registerUiClient)
-
-  app.get("/api/download/:folder/:file", (req, res) => {
-    const { folder, file } = req.params;
-    const filePath = path.join(process.cwd(), "extracted", folder, file);
-
-    res.download(filePath, file, (err) => {
-      if (err) {
-        res.status(404).json({ error: "File not found" });
-      }
-    });
-  });
+  app.get("/api/download/:folder/:file", download)
   return app
 }
 
