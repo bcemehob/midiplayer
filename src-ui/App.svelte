@@ -10,14 +10,17 @@
   let audioUrl = null
   let analyzis = null
 </script>
-
-<h1>MIDI Player</h1>
-
-<FileUpload on:uploaded={e => {
+<div class="header">
+  <h4>MIDI Player</h4>
+  <FileUpload on:uploaded={e => {
   fileName = e.detail.fileName
   folderName = e.detail.folderName
   audioUrl = e.detail.audioUrl
   analyzis = e.detail.analyzis
   }} />
+</div>
+
+
+
 <Controls {fileName} {folderName} {audioUrl} />
 <Events {fileName} {folderName}/>

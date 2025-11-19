@@ -22,9 +22,9 @@
 </script>
 
 <div>
-  <button on:click={start}>Start</button>
-  <button on:click={stop}>Stop</button>
+  <button class="sym" on:click={start} disabled="{!fileName}">▶</button>
+  <button class="sym" on:click={stop} disabled="{!fileName}">⏹</button>
 </div>
 <div>
-  <audio bind:this={audioEl} src={audioUrl} controls></audio>
+  <audio bind:this={audioEl} src={audioUrl}></audio>
 </div>

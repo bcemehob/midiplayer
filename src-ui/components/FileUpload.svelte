@@ -6,6 +6,9 @@
   const dispatch = createEventDispatcher()
   let files
   let file
+  let folder
+  let midiFile
+  let audioFile
 
   async function upload() {
     file = files?.[0]
@@ -21,19 +24,21 @@
       body: formData,
     })
     const data = await res.json()
+    folder = data.folder
+    midiFile = data.midiFile
+    audioFile = data.audioFile
     const audioResponse = await fetch(
-      `/api/download/${encodeURIComponent(data.folder)}/${encodeURIComponent(data.audioFile)}`,
+      `/api/download/${encodeURIComponent(folder)}/${encodeURIComponent(audioFile)}`,
     )
     const analyzis = await fetch(
-      `/api/analyze/${encodeURIComponent(data.folder)}/${encodeURIComponent(data.midiFile)}`,
+      `/api/analyze/${encodeURIComponent(folder)}/${encodeURIComponent(midiFile)}`,
     )
     const blob = await new Response(audioResponse.body).blob()
     let audioUrl = URL.createObjectURL(blob)
-    console.log("DATA", data, audioResponse, audioUrl)
 
     dispatch("uploaded", {
-      fileName: data.midiFile,
-      folderName: data.folder,
+      fileName: midiFile,
+      folderName: folder,
       audioUrl,
       analyzis
     })
