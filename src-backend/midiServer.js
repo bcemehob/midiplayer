@@ -1,11 +1,19 @@
 const express = require("express")
-const { download, handleArchive, storeArchive, folderPath, getMidiFile, latestBundle } = require("./FileHelper")
+const { 
+  download, 
+  handleArchive, 
+  storeArchive, 
+  folderPath,
+  pathToStatic, 
+  getMidiFile, 
+  latestBundle 
+} = require("./FileHelper")
 const { registerUiClient, emitEvent } = require("./SSEHelper")
 const { play, stop, analyze } = require("./MidiHelper")
 
 function createMidiServer() {
   const app = express()
-  app.use(express.static("public"))
+  app.use(express.static(pathToStatic))
   app.use("/files", express.static(folderPath))
   app.post("/api/upload", storeArchive, handleArchive)
   app.get("/api/download/:folder/:file", download)

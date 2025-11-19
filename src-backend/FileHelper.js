@@ -8,6 +8,8 @@ const Properties = require("./Properties")
 const upload = multer({ dest: `${Properties.uploads}/` })
 const folderPath = path.join(process.cwd(), Properties.storedFoldersName)
 const storeArchive = upload.single("archive")
+const rootDir = path.resolve(__dirname, "..")
+const pathToStatic = path.join(rootDir, "dist")
 const paths = {
   midi: null,
   audio: null,
@@ -111,4 +113,4 @@ function filePath(folder, file) {
 }
 
 
-module.exports = { download, handleArchive, storeArchive, folderPath, getMidiFile, latestBundle }
+module.exports = { download, handleArchive, storeArchive, folderPath, pathToStatic, getMidiFile, latestBundle }
