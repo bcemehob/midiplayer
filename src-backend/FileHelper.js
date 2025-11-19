@@ -25,16 +25,16 @@ async function handleArchive(req, res) {
       .pipe(unzipper.Parse())
       .on("entry", storeFile)
       .on("error", err => handleFileProcessingError(err, res))
-      .on("close", () => prepareSuccessResponse(res))
+      .on("close", () => prepareSuccessResponse(res, true))
   } catch (err) {
     console.log(err)
     res.status(500).json({ error: "Server error" })
   }
 }
 
-function prepareSuccessResponse(res) {
+function prepareSuccessResponse(res, isNewArchive) {
   res.json({
-    message: "Archive processed",
+    message: isNewArchive ? "Archive processed" : "Latest archive found",
     folder: paths.timestamp,
     midiFile: paths.midi,
     audioFile: paths.audio
@@ -79,9 +79,36 @@ function download(req, res) {
   })
 }
 
+function latestBundle(_, res) {
+  try {
+    const baseDir = path.join(process.cwd(), Properties.storedFoldersName)
+    const entries = fs.readdirSync(baseDir, { withFileTypes: true })
+    const folders = entries
+      .filter(entry => entry.isDirectory())
+      .map(entry => entry.name)
+      .map(name => Number(name))
+      .filter(num => !isNaN(num))
+    if (folders.length === 0) return res.json({})
+    paths.timestamp = String(Math.max(...folders))
+    paths.extract = path.join(Properties.storedFoldersName, paths.timestamp)
+    const files = fs.readdirSync(path.join(baseDir, paths.timestamp), { withFileTypes: true })
+      .filter(entry => entry.isFile())
+      .map(entry => entry.name)
+    const midiFile = files.find(f => f.toLowerCase().endsWith('.mid') || f.toLowerCase().endsWith('.midi'))
+    paths.midi = path.basename(midiFile)
+    const audioFile = files.find(f => ['.mp3', '.wav', '.ogg'].some(ext => f.toLowerCase().endsWith(ext)))
+    paths.audio = path.basename(audioFile)
+    return prepareSuccessResponse(res)
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 function filePath(folder, file) {
   return path.join(process.cwd(), Properties.storedFoldersName, folder, file)
 }
 
 
-module.exports = { download, handleArchive, storeArchive, folderPath, getMidiFile }
+module.exports = { download, handleArchive, storeArchive, folderPath, getMidiFile, latestBundle }

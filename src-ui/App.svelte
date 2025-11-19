@@ -1,5 +1,5 @@
 <script>
-// @ts-nocheck
+  // @ts-nocheck
 
   import FileUpload from "./components/FileUpload.svelte"
   import Controls from "./components/Controls.svelte"
@@ -10,17 +10,18 @@
   let audioUrl = null
   let analyzis = null
 </script>
+
 <div class="header">
   <h4>MIDI Player</h4>
-  <FileUpload on:uploaded={e => {
-  fileName = e.detail.fileName
-  folderName = e.detail.folderName
-  audioUrl = e.detail.audioUrl
-  analyzis = e.detail.analyzis
-  }} />
+  <FileUpload
+    on:updated={(e) => {
+      fileName = e.detail.fileName
+      folderName = e.detail.folderName
+      audioUrl = e.detail.audioUrl
+      analyzis = e.detail.analyzis
+    }}
+  />
 </div>
 
-
-
 <Controls {fileName} {folderName} {audioUrl} />
-<Events {fileName} {folderName}/>
+<Events {fileName} {folderName} />
