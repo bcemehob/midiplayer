@@ -4,7 +4,7 @@
   import { createEventDispatcher } from "svelte"
 
   const dispatch = createEventDispatcher()
-  let files // this will be a FileList
+  let files
   let file
 
   async function upload() {
@@ -24,17 +24,20 @@
     const audioResponse = await fetch(
       `/api/download/${encodeURIComponent(data.folder)}/${encodeURIComponent(data.audioFile)}`,
     )
-    const blob = await new Response(audioResponse.body).blob();
+    const analyzis = await fetch(
+      `/api/analyze/${encodeURIComponent(data.folder)}/${encodeURIComponent(data.midiFile)}`,
+    )
+    const blob = await new Response(audioResponse.body).blob()
     let audioUrl = URL.createObjectURL(blob)
     console.log("DATA", data, audioResponse, audioUrl)
 
     dispatch("uploaded", {
       fileName: data.midiFile,
       folderName: data.folder,
-      audioUrl
+      audioUrl,
+      analyzis
     })
   }
-
 </script>
 
-<input type="file" bind:files accept=".zip" on:change={upload}/>
+<input type="file" bind:files accept=".zip" on:change={upload} />

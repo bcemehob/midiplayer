@@ -8,6 +8,7 @@
   let fileName = null
   let folderName = null
   let audioUrl = null
+  let analyzis = null
 </script>
 
 <h1>MIDI Player</h1>
@@ -16,6 +17,7 @@
   fileName = e.detail.fileName
   folderName = e.detail.folderName
   audioUrl = e.detail.audioUrl
+  analyzis = e.detail.analyzis
   }} />
 <Controls {fileName} {folderName} {audioUrl} />
 <Events {fileName} {folderName}/>
