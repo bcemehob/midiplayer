@@ -4,9 +4,11 @@
   let evtSource = null
   let uploadedFile = null
   const tracks = {}
+  $: if (fileName) {
+    uploadedFile = `Uploaded: ${fileName}\n`
+  }
 
   $: if (fileName && !evtSource) {
-    uploadedFile = `Uploaded: ${fileName}\n`
     console.log("new client creation on file name change: ", fileName)
     evtSource = new EventSource("/api/events")
     evtSource.onmessage = putEventToChannel

@@ -6,7 +6,9 @@ const {
   folderPath,
   pathToStatic, 
   getMidiFile, 
-  latestBundle 
+  latestBundle, 
+  projects,
+  project
 } = require("./FileHelper")
 const { registerUiClient, emitEvent } = require("./SSEHelper")
 const { play, stop, analyze } = require("./MidiHelper")
@@ -20,6 +22,8 @@ function createMidiServer() {
   app.get("/api/analyze/:folder/:file", analyzeMidi)
   app.get("/api/start/:folder/:file", (req, res) => play(req, res, emitEvent))
   app.get("/api/latest", latestBundle)
+  app.get("/api/projects", projects)
+  app.get("/api/project/:folder", project)
   app.get("/api/events", registerUiClient)
   app.get("/api/stop", stop)
   return app

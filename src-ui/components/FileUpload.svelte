@@ -9,13 +9,21 @@
   let folder
   let midiFile
   let audioFile
+  let projects
+  let selectedProject
 
   onMount(async () => {
+    const latestProject = await loadLatest()
+    const res = await fetch("/api/projects")
+    projects = await res.json()
+    await emitProjectData(latestProject.folder, latestProject.midiFile, latestProject.audioFile)
+  })
+
+  async function loadLatest() {
     const res = await fetch("/api/latest")
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const data = await res.json()
-    await emitProjectData(data.folder, data.midiFile, data.audioFile)
-  })
+    return await res.json()
+  }
 
   async function upload() {
     file = files?.[0]
@@ -34,16 +42,22 @@
     await emitProjectData(data.folder, data.midiFile, data.audioFile)
   }
 
+  async function changeProject() {
+    const res = await fetch(`/api/project/${selectedProject}`)
+    const data = await res.json()
+    await emitProjectData(data.folder, data.midiFile, data.audioFile)
+  }
+
   async function emitProjectData(folder, midiFile, audioFile) {
     dispatch("updated", {
       fileName: midiFile,
       folderName: folder,
       audioUrl: await downloadAudio(folder, audioFile),
-      analyzis: await downloadAnalysis(folder, midiFile),
+      analyzis: await loadAnalysis(folder, midiFile),
     })
   }
 
-  async function downloadAnalysis(folder, midiFile) {
+  async function loadAnalysis(folder, midiFile) {
     return await fetch(
       `/api/analyze/${encodeURIComponent(folder)}/${encodeURIComponent(midiFile)}`,
     )
@@ -59,3 +73,10 @@
 </script>
 
 <input type="file" bind:files accept=".zip" on:change={upload} />
+<div>
+  <select bind:value={selectedProject} on:change={changeProject}>
+  {#each projects as opt}
+    <option value={opt.value}>{opt.label}</option>
+  {/each}
+</select>
+</div>

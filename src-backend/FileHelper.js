@@ -81,6 +81,16 @@ function download(req, res) {
   })
 }
 
+function projects(_, res) {
+  res.json(storedProjects().map(pr => ({ value: pr, label: pr })))
+}
+
+function project(req, res) {
+  const { folder } = req.params
+  console.log("FOLDER", folder)
+  return bundle(folder, res)
+}
+
 function storedProjects() {
   const entries = fs.readdirSync(folderPath, { withFileTypes: true })
   return entries
@@ -90,13 +100,13 @@ function storedProjects() {
     .filter(num => !isNaN(num))
 }
 
-function bundle(projectName, res) {
-  paths.timestamp = projectName
+function bundle(folder, res) {
+  paths.timestamp = folder
   paths.extract = path.join(Properties.storedFoldersName, paths.timestamp)
   const files = fs.readdirSync(path.join(folderPath, paths.timestamp), { withFileTypes: true })
     .filter(entry => entry.isFile())
     .map(entry => entry.name)
-  const midiFile = files.find(f => f.toLowerCase().endsWith('.mid') || f.toLowerCase().endsWith('.midi'))
+      const midiFile = files.find(f => f.toLowerCase().endsWith('.mid') || f.toLowerCase().endsWith('.midi'))
   paths.midi = path.basename(midiFile)
   const audioFile = files.find(f => ['.mp3', '.wav', '.ogg'].some(ext => f.toLowerCase().endsWith(ext)))
   paths.audio = path.basename(audioFile)
@@ -117,4 +127,14 @@ function filePath(folder, file) {
 }
 
 
-module.exports = { download, handleArchive, storeArchive, folderPath, pathToStatic, getMidiFile, latestBundle }
+module.exports = {
+  download,
+  handleArchive,
+  storeArchive,
+  folderPath,
+  pathToStatic,
+  getMidiFile,
+  latestBundle,
+  projects,
+  project
+}
