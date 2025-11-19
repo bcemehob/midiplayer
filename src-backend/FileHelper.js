@@ -106,7 +106,7 @@ function bundle(folder, res) {
   const files = fs.readdirSync(path.join(folderPath, paths.timestamp), { withFileTypes: true })
     .filter(entry => entry.isFile())
     .map(entry => entry.name)
-      const midiFile = files.find(f => f.toLowerCase().endsWith('.mid') || f.toLowerCase().endsWith('.midi'))
+  const midiFile = files.find(f => f.toLowerCase().endsWith('.mid') || f.toLowerCase().endsWith('.midi'))
   paths.midi = path.basename(midiFile)
   const audioFile = files.find(f => ['.mp3', '.wav', '.ogg'].some(ext => f.toLowerCase().endsWith(ext)))
   paths.audio = path.basename(audioFile)
@@ -122,10 +122,20 @@ function latestBundle(_, res) {
   }
 }
 
+function deleteProject(req, res) {
+  const { folder } = req.params
+  const folderPath = path.join(process.cwd(), Properties.storedFoldersName, folder)
+  fs.rm(folderPath, { recursive: true, force: true }, (err) => {
+    if (err) {
+      console.error("Error deleting folder:", err)
+    }
+  })
+  res.json({result: "OK"})
+}
+
 function filePath(folder, file) {
   return path.join(process.cwd(), Properties.storedFoldersName, folder, file)
 }
-
 
 module.exports = {
   download,
@@ -136,5 +146,6 @@ module.exports = {
   getMidiFile,
   latestBundle,
   projects,
-  project
+  project,
+  deleteProject
 }

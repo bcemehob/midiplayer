@@ -48,6 +48,15 @@
     await emitProjectData(data.folder, data.midiFile, data.audioFile)
   }
 
+  async function deleteProject() {
+    await fetch(`/api/project/${selectedProject}`, {method: "DELETE"})
+    const latestProject = await loadLatest()
+    selectedProject = latestProject
+    const res = await fetch("/api/projects")
+    projects = await res.json()
+    await emitProjectData(data.folder, data.midiFile, data.audioFile)
+  }
+
   async function emitProjectData(folder, midiFile, audioFile) {
     dispatch("updated", {
       fileName: midiFile,
@@ -80,3 +89,4 @@
   {/each}
 </select>
 </div>
+<button class="sym" on:click={deleteProject}>⌫</button>

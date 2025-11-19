@@ -8,7 +8,8 @@ const {
   getMidiFile, 
   latestBundle, 
   projects,
-  project
+  project,
+  deleteProject
 } = require("./FileHelper")
 const { registerUiClient, emitEvent } = require("./SSEHelper")
 const { play, stop, analyze } = require("./MidiHelper")
@@ -24,6 +25,7 @@ function createMidiServer() {
   app.get("/api/latest", latestBundle)
   app.get("/api/projects", projects)
   app.get("/api/project/:folder", project)
+  app.delete("/api/project/:folder", deleteProject)
   app.get("/api/events", registerUiClient)
   app.get("/api/stop", stop)
   return app
