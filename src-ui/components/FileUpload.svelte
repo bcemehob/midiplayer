@@ -72,9 +72,10 @@
   }
 
   async function loadAnalysis(folder, midiFile) {
-    return await fetch(
+    const response = await fetch(
       `/api/analyze/${encodeURIComponent(folder)}/${encodeURIComponent(midiFile)}`,
     )
+    return await response.json()
   }
 
   async function downloadAudio(folder, audioFile) {

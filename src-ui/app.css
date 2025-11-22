@@ -34,10 +34,6 @@ h1 {
   line-height: 1.1;
 }
 
-.card {
-  padding: 2em;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -52,10 +48,10 @@ button {
 }
 
 button.sym {
-    font-size: 1.5em;
-    padding: 0.1em 0.6em;
-    line-height: 1;
-  }
+  font-size: 1.5em;
+  padding: 0.1em 0.6em;
+  line-height: 1;
+}
 
 button:not(:disabled):hover {
   outline: none;
@@ -78,7 +74,8 @@ button:focus-visible {
 }
 
 .card {
-  border: 1px solid #eee;
+  padding: 1em;
+  border: 1px solid #ccc;
 }
 
 @media (prefers-color-scheme: light) {

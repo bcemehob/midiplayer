@@ -4,6 +4,7 @@
   import FileUpload from "./components/FileUpload.svelte"
   import Controls from "./components/Controls.svelte"
   import Events from "./components/Events.svelte"
+  import TrackTimeline from "./components/TrackTimeline.svelte"
 
   let fileName = null
   let folderName = null
@@ -25,3 +26,4 @@
 
 <Controls {fileName} {folderName} {audioUrl} />
 <Events {fileName} {folderName} />
+<TrackTimeline {analyzis} />
