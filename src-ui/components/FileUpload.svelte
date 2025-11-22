@@ -54,9 +54,10 @@
   }
 
   async function deleteProject() {
+    if (!confirm("Are you sure you want to delete this item?")) return
     await fetch(`/api/project/${selectedProject}`, { method: "DELETE" })
     const latestProject = await loadLatest()
-    selectedProject = latestProject
+    selectedProject = latestProject.folder && Number(latestProject.folder)
     const res = await fetch("/api/projects")
     projects = await res.json()
     await emitProjectData(data.folder, data.midiFile, data.audioFile)
