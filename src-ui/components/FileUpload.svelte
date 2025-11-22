@@ -16,7 +16,12 @@
     const latestProject = await loadLatest()
     const res = await fetch("/api/projects")
     projects = await res.json()
-    await emitProjectData(latestProject.folder, latestProject.midiFile, latestProject.audioFile)
+    selectedProject = latestProject.folder && Number(latestProject.folder)
+    await emitProjectData(
+      latestProject.folder,
+      latestProject.midiFile,
+      latestProject.audioFile,
+    )
   })
 
   async function loadLatest() {
@@ -49,7 +54,7 @@
   }
 
   async function deleteProject() {
-    await fetch(`/api/project/${selectedProject}`, {method: "DELETE"})
+    await fetch(`/api/project/${selectedProject}`, { method: "DELETE" })
     const latestProject = await loadLatest()
     selectedProject = latestProject
     const res = await fetch("/api/projects")
@@ -79,14 +84,27 @@
     const blob = await new Response(audioResponse.body).blob()
     return URL.createObjectURL(blob)
   }
+
+  const getFormattedDateTime = (timestamp) => {
+    const date = new Date(timestamp)
+    const formatted = date.toLocaleDateString("et-EE", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    })
+    return formatted
+  }
 </script>
 
 <input type="file" bind:files accept=".zip" on:change={upload} />
 <div>
   <select bind:value={selectedProject} on:change={changeProject}>
-  {#each projects as opt}
-    <option value={opt.value}>{opt.label}</option>
-  {/each}
-</select>
+    {#each projects as opt}
+      <option value={opt.value}>{getFormattedDateTime(opt.label)}</option>
+    {/each}
+  </select>
 </div>
 <button class="sym" on:click={deleteProject}>⌫</button>
