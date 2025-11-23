@@ -10,11 +10,13 @@
   let folderName = null
   let audioUrl = null
   let analyzis = null
+  let backendReady = false
 </script>
 
 <div class="header">
   <h4>MIDI Player</h4>
   <FileUpload
+    on:backendStatus={(e) => backendReady = e.detail.ready}
     on:updated={(e) => {
       fileName = e.detail.fileName
       folderName = e.detail.folderName

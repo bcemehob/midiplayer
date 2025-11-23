@@ -26,6 +26,7 @@
         clearInterval(retryInterval)
         retryInterval = null
       }
+      dispatch('backendStatus', { ready: true})
       const res = await fetch("/api/projects")
       projects = await res.json()
       selectedProject = latestProject.folder && Number(latestProject.folder)
