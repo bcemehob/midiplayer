@@ -28,7 +28,7 @@
 {#if uploadedFile}
   <div>{uploadedFile}</div>
 {/if}
-<div class="tracks card">
+<div class="card tracks-card">
   {#each Object.entries(tracks) as [key, eventsList]}
     <div class="flex">Track# {key}</div>
     <div class="flex">
@@ -61,7 +61,7 @@
   .event td {
     border: 1px solid gray;
   }
-  .tracks {
+  .tracks-card {
     display: inline-block;
   }
 </style>

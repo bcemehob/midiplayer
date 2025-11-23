@@ -4,3 +4,4 @@ pkg-dist/
 .DS_Store
 uploads/
 extracted/
+.drafts
