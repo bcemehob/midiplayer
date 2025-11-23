@@ -1,5 +1,6 @@
 <script>
   // @ts-nocheck
+  import { midiEvent, midiEvents } from "../store/sse"
   export let fileName = null
   let evtSource = null
   let uploadedFile = null
@@ -8,14 +9,13 @@
     uploadedFile = `Uploaded: ${fileName}\n`
   }
 
-  $: if (fileName && !evtSource) {
-    console.log("new client creation on file name change: ", fileName)
-    evtSource = new EventSource("/api/events")
-    evtSource.onmessage = putEventToChannel
+  $: if ($midiEvent) {
+    putEventToChannel($midiEvent)
   }
 
-  const putEventToChannel = (e) => {
-    const midiEvent = JSON.parse(e.data)
+  const putEventToChannel = (midiEvent) => {
+    console.log("midiEvent", midiEvent)
+    console.log("midiEvents", $midiEvents)
     const track = midiEvent.track
     const previousEvents = tracks[track]
     tracks[track] = previousEvents

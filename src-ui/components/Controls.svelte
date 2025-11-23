@@ -22,6 +22,7 @@
 </script>
 
 <div>
+  <div>File name: {fileName}</div>
   <button class="sym" on:click={start} disabled="{!fileName}">▶</button>
   <button class="sym" on:click={stop} disabled="{!fileName}">⏹</button>
 </div>

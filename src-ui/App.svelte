@@ -5,6 +5,7 @@
   import Controls from "./components/Controls.svelte"
   import Events from "./components/Events.svelte"
   import TrackTimeline from "./components/TrackTimeline.svelte"
+  import sseClient from "./sseClient"
 
   let fileName = null
   let folderName = null
@@ -16,7 +17,10 @@
 <div class="header">
   <h4>MIDI Player</h4>
   <FileUpload
-    on:backendStatus={(e) => backendReady = e.detail.ready}
+    on:backendStatus={(e) => {
+      backendReady = e.detail.ready
+      if (backendReady) sseClient.getEventSource()
+    }}
     on:updated={(e) => {
       fileName = e.detail.fileName
       folderName = e.detail.folderName
@@ -27,5 +31,4 @@
 </div>
 
 <Controls {fileName} {folderName} {audioUrl} />
-<Events {fileName} {folderName} />
 <TrackTimeline {analyzis} />

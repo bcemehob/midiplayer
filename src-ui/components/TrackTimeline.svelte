@@ -1,6 +1,7 @@
 <script>
   // @ts-nocheck
   import { onMount } from "svelte"
+  import { midiEvent, midiEvents } from "../store/sse"
   export let analyzis = null
   const data = {
     timeline: [],
@@ -76,6 +77,7 @@
 <div class="card timeline-card">
   <h3>Track Timeline:</h3>
   <div class="timeline">
+    <div class="cursor" style={offset($midiEvent.tick)}></div>
     {#each data.tempos as tempo}
       <div class="tempo" style={offset(tempo.ticks)}>
         bpm: {tempo.bpm.toFixed(1)}
@@ -112,6 +114,16 @@
     height: 1px;
     background: #ccc;
     transform: translateY(-50%);
+  }
+    .cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100px;
+    width: 20px;
+    border-left: 2px dashed green;
+    color: black;
+    cursor: pointer;
   }
   .note {
     position: absolute;
