@@ -114,6 +114,11 @@ function bundle(folder, res) {
 }
 
 function latestBundle(_, res) {
+  const projects = storedProjects()
+  if (!projects || !projects.length) {
+    res.json({})
+    return
+  }
   try {
     return bundle(String(Math.max(...storedProjects())), res)
   } catch (err) {

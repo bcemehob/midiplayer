@@ -1,7 +1,7 @@
 <script>
   // @ts-nocheck
 
-  import { createEventDispatcher, onMount } from "svelte"
+  import { createEventDispatcher, onMount, onDestroy } from "svelte"
 
   const dispatch = createEventDispatcher()
   let files
@@ -11,18 +11,34 @@
   let audioFile
   let projects
   let selectedProject
+  let retryInterval = setInterval(tryLoad, 5000)
 
-  onMount(async () => {
-    const latestProject = await loadLatest()
-    const res = await fetch("/api/projects")
-    projects = await res.json()
-    selectedProject = latestProject.folder && Number(latestProject.folder)
-    await emitProjectData(
-      latestProject.folder,
-      latestProject.midiFile,
-      latestProject.audioFile,
-    )
+  onMount(async () => await tryLoad())
+
+  onDestroy(() => {
+    if (retryInterval) clearInterval(retryInterval)
   })
+
+  async function tryLoad() {
+    try {
+      const latestProject = await loadLatest()
+      if (retryInterval) {
+        clearInterval(retryInterval)
+        retryInterval = null
+      }
+      const res = await fetch("/api/projects")
+      projects = await res.json()
+      selectedProject = latestProject.folder && Number(latestProject.folder)
+      if (!latestProject.folder) return
+      await emitProjectData(
+        latestProject.folder,
+        latestProject.midiFile,
+        latestProject.audioFile,
+      )
+    } catch (err) {
+      console.error("Backend error, will retry:", err.message)
+    }
+  }
 
   async function loadLatest() {
     const res = await fetch("/api/latest")
@@ -60,7 +76,11 @@
     selectedProject = latestProject.folder && Number(latestProject.folder)
     const res = await fetch("/api/projects")
     projects = await res.json()
-    await emitProjectData(data.folder, data.midiFile, data.audioFile)
+    await emitProjectData(
+      latestProject.folder,
+      latestProject.midiFile,
+      latestProject.audioFile,
+    )
   }
 
   async function emitProjectData(folder, midiFile, audioFile) {
