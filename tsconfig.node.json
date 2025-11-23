@@ -4,6 +4,7 @@
     "target": "ES2023",
     "lib": ["ES2023"],
     "module": "ESNext",
+     "composite": true,
     "types": ["node"],
     "skipLibCheck": true,
 
@@ -12,8 +13,7 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": true,
-
+    "outDir": "./ts-dist",
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
