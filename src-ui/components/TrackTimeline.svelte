@@ -7,7 +7,6 @@
     timeline: [],
     ppqn: 0,
     quarterNotes: [],
-    measureStarts: [],
     totalTicks: 0,
     measures: 0,
     tempos: [],
@@ -16,27 +15,9 @@
 
   $: if (analyzis) {
     prepareTimeline(analyzis)
-    console.log("data", data)
   }
 
-  function prepareTimeline(analyzis) {
-    data.ppqn = analyzis.ppqn
-    data.totalTicks = analyzis.totalTicks
-    data.quarterNotes = Math.ceil(data.totalTicks / data.ppqn)
-    data.tempos = analyzis.tempos
-    data.timeSignatures = analyzis.timeSignatures
-    data.quarterNotes = quarterNotes()
-    data.measureStarts = measureStarts()
-  }
-
-  function quarterNotes() {
-    return Array.from(
-      { length: Math.ceil(data.totalTicks / data.ppqn) },
-      (_, i) => i * data.ppqn,
-    )
-  }
-
-  function measureStarts() {
+  function getMeasureStarts() {
     let measureStarts = []
     for (let i = 0; i < data.timeSignatures.length; i++) {
       const ts = data.timeSignatures[i]
@@ -57,17 +38,38 @@
     }
     return measureStarts
   }
+
+  function prepareTimeline(analyzis) {
+    data.ppqn = analyzis.ppqn
+    data.totalTicks = analyzis.totalTicks
+    data.tempos = analyzis.tempos
+    data.timeSignatures = analyzis.timeSignatures
+    getQuarterNotes(getMeasureStarts())
+  }
+
+  function getQuarterNotes(measureStarts) {
+    data.quarterNotes = Array.from(
+      { length: Math.ceil(data.totalTicks / data.ppqn) },
+      (_, i) => {
+        const tick = i * data.ppqn
+        return { tick, isMeasureStart: measureStarts.includes(tick) }
+      },
+    )
+  }
+
   function goToTick(tick) {
     console.log(tick)
     return null
   }
+
   function offset(tick) {
     const offset = (tick / data.totalTicks) * 100
     return `left:${offset}%`
   }
-  function noteStyle(tick) {
-    let style = offset(tick)
-    if (tick === 0 || data.measureStarts.find((ms) => ms === tick)) {
+
+  function noteStyle(quarterNote) {
+    let style = offset(quarterNote.tick)
+    if (quarterNote.isMeasureStart) {
       style += ";font-weight:bold;font-size:16pt;color:#661c6f"
     }
     return style
@@ -90,8 +92,12 @@
       </div>
     {/each}
 
-    {#each data.quarterNotes as tick}
-      <div class="note" on:click={() => goToTick(tick)} style={noteStyle(tick)}>
+    {#each data.quarterNotes as quarterNote}
+      <div
+        class="note"
+        on:click={() => goToTick(quarterNote.tick)}
+        style={noteStyle(quarterNote)}
+      >
         |
       </div>
     {/each}
@@ -115,7 +121,7 @@
     background: #ccc;
     transform: translateY(-50%);
   }
-    .cursor {
+  .cursor {
     position: absolute;
     top: 0;
     left: 0;
