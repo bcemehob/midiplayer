@@ -2,18 +2,11 @@
   // @ts-nocheck
   import { isPlaybackStopped, midiEvent } from "../store/sse"
   export let fileName = null
-  export let folderName = null
   export let audioUrl = null
   let audioEl = null
 
   async function start() {
-    if (!fileName) {
-      alert("Upload a file first!")
-      return
-    }
-    await fetch(
-      `/api/start/${encodeURIComponent(folderName)}/${encodeURIComponent(fileName)}`,
-    )
+    await fetch("/api/start")
     isPlaybackStopped.set(false)
     audioEl.play()
   }

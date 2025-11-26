@@ -5,7 +5,7 @@ const paths = require("./paths")
 let currentPlayer = null
 let filePath = null
 
-function play(req, res, emitEvent) {
+function play(res, emitEvent) {
   const newPath = paths.fullMidiPath()
   if (newPath !== filePath) {
     filePath = newPath
