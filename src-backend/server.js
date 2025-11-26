@@ -14,7 +14,7 @@ const {
 const { registerUiClient, emitEvent } = require("./SSEHelper")
 const { play, stop, pause, analyze } = require("./MidiHelper")
 
-function createMidiServer() {
+function createServer() {
   const app = express()
   app.use(express.static(pathToStatic))
   app.use("/files", express.static(folderPath))
@@ -37,4 +37,4 @@ async function analyzeMidi(req, res) {
   res.json(analyze(file))
 }
 
-module.exports = { createMidiServer }
+module.exports = { createServer }
