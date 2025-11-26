@@ -10,8 +10,12 @@ const paths = {
   timestamp: null,
   rootDir: rootDir,
   pathToStatic: path.join(rootDir, "dist"),
-  folderPath: path.join(process.cwd(), Properties.storedFoldersName)
+  folderPath: path.join(process.cwd(), Properties.storedFoldersName),
+  fullMidiPath() {
+    return path.join(this.folderPath, String(this.timestamp), String(this.midi));
+  }
 }
+
 console.log("PATHS:", paths)
 
 module.exports = paths
