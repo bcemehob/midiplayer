@@ -4,18 +4,10 @@ const fsp = require("fs/promises")
 const unzipper = require("unzipper")
 const multer = require("multer")
 const Properties = require("./Properties")
+const paths = require("./paths")
 
 const upload = multer({ dest: `${Properties.uploads}/` })
-const folderPath = path.join(process.cwd(), Properties.storedFoldersName)
 const storeArchive = upload.single("archive")
-const rootDir = path.resolve(__dirname, "..")
-const pathToStatic = path.join(rootDir, "dist")
-const paths = {
-  midi: null,
-  audio: null,
-  extract: null,
-  timestamp: null
-}
 
 async function handleArchive(req, res) {
   try {
@@ -92,7 +84,7 @@ function project(req, res) {
 }
 
 function storedProjects() {
-  const entries = fs.readdirSync(folderPath, { withFileTypes: true })
+  const entries = fs.readdirSync(paths.folderPath, { withFileTypes: true })
   return entries
     .filter(entry => entry.isDirectory())
     .map(entry => entry.name)
@@ -103,7 +95,7 @@ function storedProjects() {
 function bundle(folder, res) {
   paths.timestamp = folder
   paths.extract = path.join(Properties.storedFoldersName, paths.timestamp)
-  const files = fs.readdirSync(path.join(folderPath, paths.timestamp), { withFileTypes: true })
+  const files = fs.readdirSync(path.join(paths.folderPath, paths.timestamp), { withFileTypes: true })
     .filter(entry => entry.isFile())
     .map(entry => entry.name)
   const midiFile = files.find(f => f.toLowerCase().endsWith('.mid') || f.toLowerCase().endsWith('.midi'))
@@ -129,7 +121,7 @@ function latestBundle(_, res) {
 
 function deleteProject(req, res) {
   const { folder } = req.params
-  const folderPath = path.join(process.cwd(), Properties.storedFoldersName, folder)
+  folderPath = path.join(process.cwd(), Properties.storedFoldersName, folder)
   fs.rm(folderPath, { recursive: true, force: true }, (err) => {
     if (err) {
       console.error("Error deleting folder:", err)
@@ -146,8 +138,6 @@ module.exports = {
   download,
   handleArchive,
   storeArchive,
-  folderPath,
-  pathToStatic,
   getMidiFile,
   latestBundle,
   projects,

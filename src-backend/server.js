@@ -3,21 +3,23 @@ const {
   download, 
   handleArchive, 
   storeArchive, 
-  folderPath,
-  pathToStatic, 
   getMidiFile, 
   latestBundle, 
   projects,
   project,
   deleteProject
 } = require("./FileHelper")
+const paths = require("./paths")
+
 const { registerUiClient, emitEvent } = require("./SSEHelper")
 const { play, stop, pause, analyze } = require("./MidiHelper")
 
+console.log("PATHS IN SERVER", paths)
 function createServer() {
   const app = express()
-  app.use(express.static(pathToStatic))
-  app.use("/files", express.static(folderPath))
+  console.log("PATH TO STATIC", paths, paths.pathToStatic)
+  app.use(express.static(paths.pathToStatic))
+  app.use("/files", express.static(paths.folderPath))
   app.post("/api/upload", storeArchive, handleArchive)
   app.get("/api/download/:folder/:file", download)
   app.get("/api/analyze/:folder/:file", analyzeMidi)
