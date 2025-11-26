@@ -79,7 +79,7 @@
 </script>
 
 <div class="card timeline-card">
-  <h3>Track Timeline: {JSON.stringify(currentMidiEvent)}</h3>
+  <h3>Track Timeline</h3>
   <div class="timeline">
     <div class="cursor" style={offset(currentMidiEvent.tick)}></div>
     {#each data.tempos as tempo}
