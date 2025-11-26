@@ -17,6 +17,11 @@ function stop(_, res) {
     res.send("Playback stopped")
 }
 
+function pause(_, res) {
+  if (currentPlayer) currentPlayer.pause()
+    res.send("Playback paused")
+}
+
 function analyze(file) {
     const midi = new Midi(file)
     return {
@@ -33,4 +38,4 @@ const lastTickTime = midi => {
     return Math.trunc(midi.header.ticksToSeconds(midi.durationTicks) * 1000)
 }
 
-module.exports = { play, stop, analyze }
+module.exports = { play, stop, pause, analyze }

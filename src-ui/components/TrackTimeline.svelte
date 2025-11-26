@@ -3,6 +3,7 @@
   import { onMount } from "svelte"
   import { midiEvent, midiEvents } from "../store/sse"
   export let analyzis = null
+  let currentMidiEvent = {}
   const data = {
     timeline: [],
     ppqn: 0,
@@ -13,6 +14,7 @@
     timeSignatures: [],
   }
 
+  $: currentMidiEvent = $midiEvent
   $: if (analyzis) {
     prepareTimeline(analyzis)
   }
@@ -58,7 +60,7 @@
   }
 
   function goToTick(tick) {
-    console.log(tick)
+    currentMidiEvent.tick = tick
     return null
   }
 
@@ -77,9 +79,9 @@
 </script>
 
 <div class="card timeline-card">
-  <h3>Track Timeline:</h3>
+  <h3>Track Timeline: {JSON.stringify(currentMidiEvent)}</h3>
   <div class="timeline">
-    <div class="cursor" style={offset($midiEvent.tick)}></div>
+    <div class="cursor" style={offset(currentMidiEvent.tick)}></div>
     {#each data.tempos as tempo}
       <div class="tempo" style={offset(tempo.ticks)}>
         bpm: {tempo.bpm.toFixed(1)}

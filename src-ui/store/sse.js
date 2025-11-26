@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { writable } from "svelte/store"
-
-export const midiEvent = writable(0)
+export const isPlaybackStopped = writable(true)
+export const midiEvent = writable({})
 export const midiEvents = writable([])
 window.addEventListener("sse-update", (e) => {
     midiEvent.set(e.detail)
@@ -13,5 +13,5 @@ window.addEventListener("sse-update", (e) => {
         }
         updatedEvents[trackId] = [...updatedEvents[trackId], event.detail]
         return updatedEvents
-    });
-});
+    })
+})

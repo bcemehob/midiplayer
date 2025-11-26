@@ -12,7 +12,7 @@ const {
   deleteProject
 } = require("./FileHelper")
 const { registerUiClient, emitEvent } = require("./SSEHelper")
-const { play, stop, analyze } = require("./MidiHelper")
+const { play, stop, pause, analyze } = require("./MidiHelper")
 
 function createMidiServer() {
   const app = express()
@@ -28,6 +28,7 @@ function createMidiServer() {
   app.delete("/api/project/:folder", deleteProject)
   app.get("/api/events", registerUiClient)
   app.get("/api/stop", stop)
+  app.get("/api/pause", pause)
   return app
 }
 
