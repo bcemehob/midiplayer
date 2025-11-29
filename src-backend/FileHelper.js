@@ -5,6 +5,7 @@ const unzipper = require("unzipper")
 const multer = require("multer")
 const Properties = require("./Properties")
 const paths = require("./paths")
+const events = require('./events')
 
 const upload = multer({ dest: `${Properties.uploads}/` })
 const storeArchive = upload.single("archive")
@@ -27,6 +28,7 @@ async function handleArchive(req, res) {
 }
 
 function prepareSuccessResponse(res, isNewArchive) {
+  events.emit('projectChanged', {project: paths.timestamp})
   res.json({
     message: isNewArchive ? "Archive processed" : "Latest archive found",
     folder: paths.timestamp,
@@ -127,7 +129,7 @@ function deleteProject(req, res) {
       console.error("Error deleting folder:", err)
     }
   })
-  res.json({result: "OK"})
+  res.json({ result: "OK" })
 }
 
 function filePath(folder, file) {

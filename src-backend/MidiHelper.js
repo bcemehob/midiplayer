@@ -1,21 +1,19 @@
 const Properties = require("./Properties")
 const { Player } = require("midi-player-js")
 const { Midi } = require("@tonejs/midi")
-const paths = require("./paths")
-let currentPlayer = null
-let filePath = null
+const events = require('./events')
 
-function play(res, emitEvent) {
-  const newPath = paths.fullMidiPath()
-  let playerCreated = ""
-  if (newPath !== filePath) {
-    playerCreated = ` and new player created for ${newPath}`
-    filePath = newPath
-    currentPlayer = new Player(emitEvent)
-    currentPlayer.loadFile(filePath)
-  }
+let currentPlayer = null
+
+
+function resetPlayer(filePath, emitEventFn) {
+  currentPlayer = new Player(emitEventFn)
+  currentPlayer.loadFile(filePath)
+}
+
+function play(_, res) {
   currentPlayer.play()
-  res.send(`Playback started${playerCreated}`)
+  res.send("Playback started")
 }
 
 function stop(_, res) {
@@ -51,4 +49,4 @@ const lastTickTime = midi => {
   return Math.trunc(midi.header.ticksToSeconds(midi.durationTicks) * 1000)
 }
 
-module.exports = { play, stop, pause, analyze, jump }
+module.exports = { play, stop, pause, analyze, jump, resetPlayer }

@@ -12,7 +12,10 @@ const {
 const paths = require("./paths")
 
 const { registerUiClient, emitEvent } = require("./SSEHelper")
-const { play, stop, pause, analyze, jump } = require("./MidiHelper")
+const { play, stop, pause, analyze, jump, resetPlayer } = require("./MidiHelper")
+const events = require('./events')
+
+events.on('projectChanged', () => resetPlayer(paths.fullMidiPath(), emitEvent))
 
 function createServer() {
   const app = express()
@@ -21,7 +24,7 @@ function createServer() {
   app.post("/api/upload", storeArchive, handleArchive)
   app.get("/api/download/:folder/:file", download)
   app.get("/api/analyze/:folder/:file", analyzeMidi)
-  app.get("/api/start", (_, res) => play(res, emitEvent))
+  app.get("/api/start", play)
   app.get("/api/latest", latestBundle)
   app.get("/api/projects", projects)
   app.get("/api/project/:folder", project)
