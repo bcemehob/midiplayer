@@ -1,6 +1,6 @@
 <script>
   // @ts-nocheck
-  import { onMount } from "svelte"
+  import { onMount, onDestroy } from "svelte"
   import { midiEvent, midiEvents } from "../store/sse"
   export let analyzis = null
   let currentMidiEvent = {}
@@ -13,6 +13,9 @@
     tempos: [],
     timeSignatures: [],
   }
+
+  window.addEventListener("beforeunload", async event => await fetch("/api/stop"))
+  onDestroy(() => window.removeEventListener("beforeunload", handler))
 
   $: currentMidiEvent = $midiEvent
   $: if (analyzis) {
@@ -77,6 +80,7 @@
     }
     return style
   }
+
 </script>
 
 <div class="card timeline-card">
