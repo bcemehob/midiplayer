@@ -16,6 +16,4 @@ const paths = {
   }
 }
 
-console.log("PATHS:", paths)
-
 module.exports = paths

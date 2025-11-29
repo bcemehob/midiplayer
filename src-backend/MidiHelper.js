@@ -7,13 +7,15 @@ let filePath = null
 
 function play(res, emitEvent) {
   const newPath = paths.fullMidiPath()
+  let playerCreated = ""
   if (newPath !== filePath) {
+    playerCreated = ` and new player created for ${newPath}`
     filePath = newPath
     currentPlayer = new Player(emitEvent)
     currentPlayer.loadFile(filePath)
   }
   currentPlayer.play()
-  res.send("Playback started")
+  res.send(`Playback started${playerCreated}`)
 }
 
 function stop(_, res) {
@@ -24,6 +26,13 @@ function stop(_, res) {
 function pause(_, res) {
   if (currentPlayer) currentPlayer.pause()
   res.send("Playback paused")
+}
+
+function jump(req, res) {
+  if (!currentPlayer) return
+  currentPlayer.pause()
+  currentPlayer.skipToTick(req.query.tick)
+  res.send(`Rewind to tick ${currentPlayer.getCurrentTick()}`)
 }
 
 function analyze(file) {
@@ -42,4 +51,4 @@ const lastTickTime = midi => {
   return Math.trunc(midi.header.ticksToSeconds(midi.durationTicks) * 1000)
 }
 
-module.exports = { play, stop, pause, analyze }
+module.exports = { play, stop, pause, analyze, jump }

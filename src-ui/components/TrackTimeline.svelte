@@ -59,8 +59,9 @@
     )
   }
 
-  function goToTick(tick) {
+  async function goToTick(tick) { 
     currentMidiEvent.tick = tick
+    await fetch(`/api/jump?tick=${tick}`)
     return null
   }
 

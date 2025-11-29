@@ -12,7 +12,7 @@ const {
 const paths = require("./paths")
 
 const { registerUiClient, emitEvent } = require("./SSEHelper")
-const { play, stop, pause, analyze } = require("./MidiHelper")
+const { play, stop, pause, analyze, jump } = require("./MidiHelper")
 
 function createServer() {
   const app = express()
@@ -29,6 +29,7 @@ function createServer() {
   app.get("/api/events", registerUiClient)
   app.get("/api/stop", stop)
   app.get("/api/pause", pause)
+  app.get("/api/jump", jump)
   return app
 }
 
