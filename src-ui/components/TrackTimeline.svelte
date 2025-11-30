@@ -3,7 +3,6 @@
   import { onMount, onDestroy } from "svelte"
   import { midiEvent, midiEvents } from "../store/sse"
   export let analyzis = null
-  let currentMidiEvent = {}
   const data = {
     timeline: [],
     ppqn: 0,
@@ -14,10 +13,12 @@
     timeSignatures: [],
   }
 
-  window.addEventListener("beforeunload", async event => await fetch("/api/stop"))
+  window.addEventListener("beforeunload", async event => {
+    await fetch("/api/stop")
+    midiEvent.set({tick: 0})
+  })
   onDestroy(() => window.removeEventListener("beforeunload", handler))
 
-  $: currentMidiEvent = $midiEvent
   $: if (analyzis) {
     prepareTimeline(analyzis)
   }
@@ -62,8 +63,8 @@
     )
   }
 
-  async function goToTick(tick) { 
-    currentMidiEvent.tick = tick
+  async function goToTick(tick) {
+    midiEvent.set({tick})
     await fetch(`/api/jump?tick=${tick}`)
     return null
   }
@@ -86,7 +87,7 @@
 <div class="card timeline-card">
   <h3>Track Timeline</h3>
   <div class="timeline">
-    <div class="cursor" style={offset(currentMidiEvent.tick)}></div>
+    <div class="cursor" style={offset($midiEvent.tick)}></div>
     {#each data.tempos as tempo}
       <div class="tempo" style={offset(tempo.ticks)}>
         bpm: {tempo.bpm.toFixed(1)}
