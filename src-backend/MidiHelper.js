@@ -27,9 +27,10 @@ function pause(_, res) {
 }
 
 function jump(req, res) {
+  const tick = Number(req.query.tick)
   if (!currentPlayer) return
-  currentPlayer.pause()
-  currentPlayer.skipToTick(req.query.tick)
+  currentPlayer.stop()
+  currentPlayer.skipToTick(tick)
   res.send(`Rewind to tick ${currentPlayer.getCurrentTick()}`)
 }
 
