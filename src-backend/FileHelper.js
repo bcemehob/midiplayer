@@ -61,9 +61,8 @@ function storeFile(entry) {
   }
 }
 
-async function getMidiFile(req) {
-  const { folder, file } = req.params
-  return await fsp.readFile(filePath(folder, file))
+async function getFile(path) {
+  return await fsp.readFile(path)
 }
 
 function download(req, res) {
@@ -140,7 +139,7 @@ module.exports = {
   download,
   handleArchive,
   storeArchive,
-  getMidiFile,
+  getFile,
   latestBundle,
   projects,
   project,

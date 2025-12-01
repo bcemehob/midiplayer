@@ -3,7 +3,7 @@ const {
   download, 
   handleArchive, 
   storeArchive, 
-  getMidiFile, 
+  getFile, 
   latestBundle, 
   projects,
   project,
@@ -15,7 +15,7 @@ const { registerUiClient, emitEvent } = require("./SSEHelper")
 const { play, stop, pause, analyze, jump, resetPlayer } = require("./MidiHelper")
 const events = require('./events')
 
-events.on('projectChanged', () => resetPlayer(paths.fullMidiPath(), emitEvent))
+events.on('projectChanged', async () => resetPlayer(paths.fullMidiPath(), emitEvent, await getFile(paths.fullMidiPath())))
 
 function createServer() {
   const app = express()
@@ -23,7 +23,7 @@ function createServer() {
   app.use("/files", express.static(paths.folderPath))
   app.post("/api/upload", storeArchive, handleArchive)
   app.get("/api/download/:folder/:file", download)
-  app.get("/api/analyze/:folder/:file", analyzeMidi)
+  app.get("/api/analyze", analyze)
   app.get("/api/start", play)
   app.get("/api/latest", latestBundle)
   app.get("/api/projects", projects)
@@ -34,11 +34,6 @@ function createServer() {
   app.get("/api/pause", pause)
   app.get("/api/jump", jump)
   return app
-}
-
-async function analyzeMidi(req, res) {
-  const file = await getMidiFile(req)
-  res.json(analyze(file))
 }
 
 module.exports = { createServer }

@@ -89,15 +89,13 @@
       fileName: midiFile,
       folderName: folder,
       audioUrl: await downloadAudio(folder, audioFile),
-      analyzis: await loadAnalysis(folder, midiFile),
+      analyzis: await loadAnalysis(),
     })
   }
 
-  async function loadAnalysis(folder, midiFile) {
-    const response = await fetch(
-      `/api/analyze/${encodeURIComponent(folder)}/${encodeURIComponent(midiFile)}`,
-    )
-    return await response.json()
+  async function loadAnalysis() {
+    const res = await fetch("/api/analyze")
+    return await res.json()
   }
 
   async function downloadAudio(folder, audioFile) {

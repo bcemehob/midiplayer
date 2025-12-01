@@ -4,11 +4,13 @@ const { Midi } = require("@tonejs/midi")
 const events = require('./events')
 
 let currentPlayer = null
+let midiAnalyzis = null
 
 
-function resetPlayer(filePath, emitEventFn) {
+function resetPlayer(filePath, emitEventFn, midiFile) {
   currentPlayer = new Player(emitEventFn)
   currentPlayer.loadFile(filePath)
+  midiAnalyzis = new Midi(midiFile)
 }
 
 function play(_, res) {
@@ -31,18 +33,22 @@ function jump(req, res) {
   if (!currentPlayer) return
   currentPlayer.stop()
   currentPlayer.skipToTick(tick)
-  res.send(`Rewind to tick ${currentPlayer.getCurrentTick()}`)
+  res.json({
+    tick: currentPlayer.getCurrentTick(),
+    songTime: currentPlayer.getSongTime(),
+    remainingTime: currentPlayer.getSongTimeRemaining(),
+    time: currentPlayer.getSongTime() - currentPlayer.getSongTimeRemaining()
+  })
 }
 
-function analyze(file) {
-  const midi = new Midi(file)
-  return {
-    tempos: midi.header.tempos,
-    timeSignatures: midi.header.timeSignatures,
-    totalTicks: midi.durationTicks,
-    ppqn: midi.header.ppq,
-    lastTickTime: lastTickTime(midi)
-  }
+function analyze(_, res) {
+  res.json({
+    tempos: midiAnalyzis.header.tempos,
+    timeSignatures: midiAnalyzis.header.timeSignatures,
+    totalTicks: midiAnalyzis.durationTicks,
+    ppqn: midiAnalyzis.header.ppq,
+    lastTickTime: lastTickTime(midiAnalyzis)
+  })
 }
 
 const lastTickTime = midi => {
