@@ -34,12 +34,38 @@ function jump(req, res) {
   currentPlayer.stop()
   currentPlayer.skipToTick(tick)
   res.json({
+    currentTimeMs: ticksToMsFromStart(tick),
     tick: currentPlayer.getCurrentTick(),
     songTime: currentPlayer.getSongTime(),
     remainingTime: currentPlayer.getSongTimeRemaining(),
     time: currentPlayer.getSongTime() - currentPlayer.getSongTimeRemaining()
   })
 }
+
+function ticksToMsFromStart(ticks) {
+  if (!midiAnalyzis) return 0
+  const tempos = midiAnalyzis.header.tempos
+  const ppqn = midiAnalyzis.header.ppq
+  const totalTicks = midiAnalyzis.durationTicks
+  let prevTempoBlocksDuration = 0
+  let curBlock = null
+  for (let i = 0; i < tempos.length; i++) {
+    const start = tempos[i].ticks
+    const end = i < tempos.length - 1 ? tempos[i + 1].ticks : totalTicks
+    if (end > ticks) {
+      curBlock = tempos[i]
+      break
+    }
+    const blockTicks = end - start
+    const blockMs = ticksToMs(blockTicks, tempos[i].bpm, ppqn)
+    prevTempoBlocksDuration += blockMs
+  }
+  const curTempoBlockOffset = ticks - curBlock.ticks
+  const timeFromBlockStartMs = ticksToMs(curTempoBlockOffset, curBlock.bpm, ppqn)
+  return Math.floor(prevTempoBlocksDuration + timeFromBlockStartMs)
+}
+
+const ticksToMs = (ticks, bpm, ppqn) => ticks * (60000 / (bpm * ppqn))
 
 function analyze(_, res) {
   res.json({
