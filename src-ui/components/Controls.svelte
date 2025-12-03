@@ -1,9 +1,13 @@
 <script>
   // @ts-nocheck
-  import { isPlaybackStopped, midiEvent } from "../store/sse"
+  import { isPlaybackStopped, midiEvent, currentTimeMs } from "../store/sse"
   export let fileName = null
     export let audioUrl = null
   let audioEl = null
+
+  $: if (audioEl) {
+    audioEl.currentTime = $currentTimeMs / 1000
+  }
 
   async function start() {
     await fetch("/api/start")
@@ -17,6 +21,7 @@
     audioEl.pause()
     audioEl.currentTime = 0
     midiEvent.set({tick: 0})
+    currentTimeMs.set(0)
   }
 
   async function pause() {

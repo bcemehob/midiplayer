@@ -1,7 +1,7 @@
 <script>
   // @ts-nocheck
   import { onMount, onDestroy } from "svelte"
-  import { midiEvent, midiEvents } from "../store/sse"
+  import { currentTimeMs, midiEvent, midiEvents } from "../store/sse"
   export let analyzis = null
   const data = {
     timeline: [],
@@ -65,8 +65,11 @@
 
   async function goToTick(tick) {
     midiEvent.set({tick})
-    await fetch(`/api/jump?tick=${tick}`)
-    return null
+    const res = await fetch(`/api/jump?tick=${tick}`)
+    const data = await res.json()
+    if (!!data.currentTimeMs && !Number.isNaN(data.currentTimeMs)) {
+      currentTimeMs.set(Number(data.currentTimeMs))
+    }
   }
 
   function offset(tick) {

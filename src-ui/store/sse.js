@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { writable } from "svelte/store"
 export const isPlaybackStopped = writable(true)
+export const currentTimeMs = writable(0)
 export const midiEvent = writable({})
 export const midiEvents = writable([])
 window.addEventListener("sse-update", (e) => {
