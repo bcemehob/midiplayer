@@ -29,6 +29,13 @@
     isPlaybackStopped.set(true)
     audioEl.pause()
   }
+
+  function handleEnded() {
+    isPlaybackStopped.set(true)
+    midiEvent.set({tick: 0})
+    currentTimeMs.set(0)
+
+  }
 </script>
 
 <div>
@@ -42,5 +49,5 @@
   <button class="sym" on:click={stop} disabled={!fileName || $isPlaybackStopped}>⏹</button>
 </div>
 <div>
-  <audio bind:this={audioEl} src={audioUrl}></audio>
+  <audio bind:this={audioEl} src={audioUrl} on:ended={handleEnded}></audio>
 </div>
