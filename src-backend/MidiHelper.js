@@ -9,6 +9,7 @@ let midiAnalyzis = null
 
 function resetPlayer(filePath, emitEventFn, midiFile) {
   currentPlayer = new Player(emitEventFn)
+  emitEventFn({tick: 0})
   currentPlayer.loadFile(filePath)
   midiAnalyzis = new Midi(midiFile)
 }
