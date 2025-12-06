@@ -112,6 +112,10 @@ function latestBundle(_, res) {
     res.json({})
     return
   }
+  if (paths.timestamp){
+    prepareSuccessResponse(res)
+    return
+  }
   try {
     return bundle(String(Math.max(...storedProjects())), res)
   } catch (err) {
