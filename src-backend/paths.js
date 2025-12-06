@@ -12,7 +12,12 @@ const paths = {
   pathToStatic: path.join(rootDir, "dist"),
   folderPath: path.join(process.cwd(), Properties.storedFoldersName),
   fullMidiPath() {
-    return path.join(this.folderPath, String(this.timestamp), String(this.midi));
+    return path.join(this.folderPath, String(this.timestamp), String(this.midi))
+  },
+  reset() {
+    this.midi = null
+    this.audio = null
+    this.timestamp = null
   }
 }
 

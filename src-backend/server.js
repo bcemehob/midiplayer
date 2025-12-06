@@ -4,7 +4,7 @@ const {
   handleArchive, 
   storeArchive, 
   getFile, 
-  latestBundle, 
+  latestBundle,
   projects,
   project,
   deleteProject

@@ -132,6 +132,7 @@ function deleteProject(req, res) {
       console.error("Error deleting folder:", err)
     }
   })
+  if (paths.timestamp === folder) paths.reset()
   res.json({ result: "OK" })
 }
 

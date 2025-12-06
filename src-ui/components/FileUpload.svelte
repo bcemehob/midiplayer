@@ -61,6 +61,8 @@
       body: formData,
     })
     const data = await res.json()
+    selectedProject = Number(data.folder)
+    projects.push({value: selectedProject, label: selectedProject})
     await emitProjectData(data.folder, data.midiFile, data.audioFile)
   }
 
