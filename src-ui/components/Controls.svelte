@@ -1,8 +1,9 @@
 <script>
   // @ts-nocheck
+  import { goToTick } from "../helpers/playback"
   import { isPlaybackStopped, midiEvent, currentTimeMs } from "../store"
   export let fileName = null
-    export let audioUrl = null
+  export let audioUrl = null
   let audioEl = null
 
   $: if (audioEl) {
@@ -20,7 +21,7 @@
     isPlaybackStopped.set(true)
     audioEl.pause()
     audioEl.currentTime = 0
-    midiEvent.set({tick: 0})
+    midiEvent.set({ tick: 0 })
     currentTimeMs.set(0)
   }
 
@@ -32,9 +33,8 @@
 
   function handleEnded() {
     isPlaybackStopped.set(true)
-    midiEvent.set({tick: 0})
+    midiEvent.set({ tick: 0 })
     currentTimeMs.set(0)
-
   }
 </script>
 
@@ -47,6 +47,7 @@
     <button class="sym" on:click={pause} disabled={!fileName}>⏸</button>
   {/if}
   <button class="sym" on:click={stop} disabled={!fileName || $isPlaybackStopped}>⏹</button>
+  <button class="sym" on:click={() => goToTick(0)} disabled={!fileName}>⏮</button>
 </div>
 <div>
   <audio bind:this={audioEl} src={audioUrl} on:ended={handleEnded}></audio>
