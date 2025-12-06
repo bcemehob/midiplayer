@@ -5,7 +5,7 @@
     isPlaybackStopped,
     midiEvent,
     currentTimeMs,
-    latestStartFrom,
+    latestStartTick,
   } from "../store"
   export let fileName = null
   export let audioUrl = null
@@ -18,23 +18,23 @@
   async function start() {
     await fetch("/api/start")
     isPlaybackStopped.set(false)
+    audioEl.currentTime = $currentTimeMs
     audioEl.play()
   }
 
   async function stop() {
     await fetch("/api/stop")
-    isPlaybackStopped.set(true)
     stopPlaybackAndSetCursor()
   }
 
   async function pause() {
     await fetch("/api/pause")
-    isPlaybackStopped.set(true)
-    audioEl.pause()
+    latestStartTick.set($midiEvent.tick)
+    stopPlaybackAndSetCursor()
+
   }
 
   function handleEnded() {
-    isPlaybackStopped.set(true)
     stopPlaybackAndSetCursor()
   }
 
@@ -44,9 +44,9 @@
   }
 
   function stopPlaybackAndSetCursor() {
+    isPlaybackStopped.set(true)
     audioEl.pause()
-    midiEvent.set({ tick: $latestStartFrom.tick })
-    currentTimeMs.set($latestStartFrom.ms)
+    goToTick($latestStartTick)
   }
 </script>
 

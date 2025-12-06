@@ -2,7 +2,7 @@
   // @ts-nocheck
   import { onMount, onDestroy } from "svelte"
   import { goToTick } from "../helpers/playback"
-  import { currentTimeMs, midiEvent, midiEvents, latestStartFrom } from "../store"
+  import { currentTimeMs, midiEvent, midiEvents, latestStartTick } from "../store"
   export let analyzis = null
   const data = {
     timeline: [],

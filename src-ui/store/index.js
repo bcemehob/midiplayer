@@ -3,7 +3,7 @@ import { writable } from "svelte/store"
 export const isPlaybackStopped = writable(true)
 export const currentTimeMs = writable(0)
 export const midiEvent = writable({})
-export const latestStartFrom = writable({tick: 0, ms: 0})
+export const latestStartTick = writable(0)
 export const midiEvents = writable([])
 window.addEventListener("sse-update", (e) => {
     midiEvent.set(e.detail)

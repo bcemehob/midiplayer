@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { midiEvent, currentTimeMs, latestStartFrom } from "../store";
+import { midiEvent, currentTimeMs, latestStartTick } from "../store";
 import { get } from "svelte/store"; // to safely read store values
 
 export async function goToTick(tick) {
@@ -8,9 +8,9 @@ export async function goToTick(tick) {
   const res = await fetch(`/api/jump?tick=${tick}`)
   const data = await res.json()
 
-  if (!!data.currentTimeMs && !Number.isNaN(data.currentTimeMs)) {
+  if ((!!data.currentTimeMs  || data.currentTimeMs === 0) && !Number.isNaN(data.currentTimeMs)) {
     const ms = Number(data.currentTimeMs)
     currentTimeMs.set(ms)
-    latestStartFrom.set({ tick, ms })
+    latestStartTick.set(tick)
   }
 }
