@@ -4,7 +4,7 @@
   import FileUpload from "./components/FileUpload.svelte"
   import Controls from "./components/Controls.svelte"
   import Events from "./components/Events.svelte"
-  import TrackTimeline from "./components/TrackTimeline.svelte"
+  import TrackTimeline from "./components/Timeline.svelte"
   import sseClient from "./sseClient"
 
   let fileName = null
