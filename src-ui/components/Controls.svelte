@@ -1,7 +1,12 @@
 <script>
   // @ts-nocheck
   import { goToTick } from "../helpers/playback"
-  import { isPlaybackStopped, midiEvent, currentTimeMs } from "../store"
+  import {
+    isPlaybackStopped,
+    midiEvent,
+    currentTimeMs,
+    latestStartFrom,
+  } from "../store"
   export let fileName = null
   export let audioUrl = null
   let audioEl = null
@@ -19,10 +24,7 @@
   async function stop() {
     await fetch("/api/stop")
     isPlaybackStopped.set(true)
-    audioEl.pause()
-    audioEl.currentTime = 0
-    midiEvent.set({ tick: 0 })
-    currentTimeMs.set(0)
+    stopPlaybackAndSetCursor()
   }
 
   async function pause() {
@@ -33,8 +35,18 @@
 
   function handleEnded() {
     isPlaybackStopped.set(true)
-    midiEvent.set({ tick: 0 })
-    currentTimeMs.set(0)
+    stopPlaybackAndSetCursor()
+  }
+
+  function rewindToStart() {
+    goToTick(0)
+    stopPlaybackAndSetCursor()
+  }
+
+  function stopPlaybackAndSetCursor() {
+    audioEl.pause()
+    midiEvent.set({ tick: $latestStartFrom.tick })
+    currentTimeMs.set($latestStartFrom.ms)
   }
 </script>
 
