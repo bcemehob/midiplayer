@@ -1,6 +1,6 @@
 <script>
   // @ts-nocheck
-  import { isPlaybackStopped, midiEvent, currentTimeMs } from "../store/sse"
+  import { isPlaybackStopped, midiEvent, currentTimeMs } from "../store"
   export let fileName = null
     export let audioUrl = null
   let audioEl = null

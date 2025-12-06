@@ -1,6 +1,6 @@
 <script>
   // @ts-nocheck
-  import { midiEvent, midiEvents } from "../store/sse"
+  import { midiEvent, midiEvents } from "../store"
   export let fileName = null
   let evtSource = null
   let uploadedFile = null

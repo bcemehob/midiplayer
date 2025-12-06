@@ -1,7 +1,7 @@
 <script>
   // @ts-nocheck
   import { onMount, onDestroy } from "svelte"
-  import { currentTimeMs, midiEvent, midiEvents } from "../store/sse"
+  import { currentTimeMs, midiEvent, midiEvents } from "../store"
   export let analyzis = null
   const data = {
     timeline: [],
