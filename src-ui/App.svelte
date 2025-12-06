@@ -1,7 +1,7 @@
 <script>
   // @ts-nocheck
 
-  import FileUpload from "./components/FileUpload.svelte"
+  import FileUpload from "./components/Files.svelte"
   import Controls from "./components/Controls.svelte"
   import Events from "./components/Events.svelte"
   import TrackTimeline from "./components/Timeline.svelte"
