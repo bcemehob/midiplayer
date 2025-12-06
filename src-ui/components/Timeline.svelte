@@ -2,7 +2,12 @@
   // @ts-nocheck
   import { onMount, onDestroy } from "svelte"
   import { goToTick } from "../helpers/playback"
-  import { currentTimeMs, midiEvent, midiEvents, latestStartTick } from "../store"
+  import {
+    currentTimeMs,
+    midiEvent,
+    midiEvents,
+    latestStartTick,
+  } from "../store"
   export let analyzis = null
   const data = {
     timeline: [],
@@ -14,9 +19,9 @@
     timeSignatures: [],
   }
 
-  window.addEventListener("beforeunload", async event => {
+  window.addEventListener("beforeunload", async (event) => {
     await fetch("/api/stop")
-    midiEvent.set({tick: 0})
+    midiEvent.set({ tick: 0 })
   })
   onDestroy(() => window.removeEventListener("beforeunload", handler))
 
@@ -76,7 +81,6 @@
     }
     return style
   }
-
 </script>
 
 <div class="card timeline-card">
@@ -97,8 +101,11 @@
 
     {#each data.quarterNotes as quarterNote}
       <div
+        role="button"
         class="note"
+        tabindex="0"
         on:click={() => goToTick(quarterNote.tick)}
+        on:keydown={(e) => e.key === "Enter" && goToTick(quarterNote.tick)}
         style={noteStyle(quarterNote)}
       >
         |
