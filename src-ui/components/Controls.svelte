@@ -23,7 +23,11 @@
     audioEl.play()
   }
 
-  function toggleStartOnSpace(event) {
+  function setHotKeys(event) {
+    if ($isPlaybackStopped && event.shiftKey && event.code === "ArrowLeft") {
+      event.preventDefault()
+      goToTick(0)
+    }
     if (event.code === "Space") {
       event.preventDefault()
       if ($isPlaybackStopped) start()
@@ -59,11 +63,11 @@
     goToTick($latestStartTick)
   }
   onMount(() => {
-    window.addEventListener("keydown", toggleStartOnSpace)
+    window.addEventListener("keydown", setHotKeys)
   })
 
   onDestroy(() => {
-    window.removeEventListener("keydown", toggleStartOnSpace)
+    window.removeEventListener("keydown", setHotKeys)
   })
 </script>
 
@@ -74,7 +78,7 @@
     <button
       class="sym"
       on:click={start}
-      on:keydown={toggleStartOnSpace}
+      on:keydown={setHotKeys}
       disabled={!fileName}>▶</button
     >
   {:else}
