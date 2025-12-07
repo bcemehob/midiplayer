@@ -189,8 +189,4 @@
     position: relative;
     margin-top: 40px;
   }
-  .track {
-    border: 1px solid #cacae6;
-    background-color: #e9fff8;
-  }
 </style>
