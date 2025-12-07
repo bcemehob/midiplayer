@@ -4,8 +4,6 @@
   export let index = null
   export let totalTicks = 0
   const colors = ["#e9fff8", "#ffe9f8", "#f8e9ff"]
-
-  console.log("Track", track)
 </script>
 
 <div class="track-label" style="top: {(index + 1) * 60}px">
