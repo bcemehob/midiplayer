@@ -8,6 +8,7 @@
     midiEvents,
     latestStartTick,
   } from "../store"
+  import Track from "./Track.svelte"
   export let analyzis = null
   const data = {
     timeline: [],
@@ -116,11 +117,8 @@
         {/each}
       </div>
       <div class="tracks">
-        {#each data.tracks as track, i}
-          <div class="track" style="top: {(i + 1) * 60}px">
-            TRACK: {track.number}
-            {track.name}
-          </div>
+        {#each data.tracks as track, index}
+          <Track {track} {index} totalTicks={data.totalTicks}/>
         {/each}
       </div>
       <div class="cursor" style={offset($midiEvent.tick)}></div>
