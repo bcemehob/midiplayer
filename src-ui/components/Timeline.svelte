@@ -17,6 +17,7 @@
     measures: 0,
     tempos: [],
     timeSignatures: [],
+    tracks: [],
   }
 
   window.addEventListener("beforeunload", async (event) => {
@@ -56,6 +57,7 @@
     data.totalTicks = analyzis.totalTicks
     data.tempos = analyzis.tempos
     data.timeSignatures = analyzis.timeSignatures
+    data.tracks = analyzis.tracks
     getQuarterNotes(getMeasureStarts())
   }
 
@@ -85,36 +87,56 @@
 
 <div class="card timeline-card">
   <h3>Track Timeline</h3>
-  <div class="timeline">
-    <div class="cursor" style={offset($midiEvent.tick)}></div>
-    {#each data.tempos as tempo}
-      <div class="tempo" style={offset(tempo.ticks)}>
-        bpm: {tempo.bpm.toFixed(1)}
-      </div>
-    {/each}
+  <div class="timeline-wrap">
+    <div class="timeline">
+      <div class="scala">
+        {#each data.tempos as tempo}
+          <div class="tempo" style={offset(tempo.ticks)}>
+            bpm: {tempo.bpm.toFixed(1)}
+          </div>
+        {/each}
 
-    {#each data.timeSignatures as timeSignature}
-      <div class="signature" style={offset(timeSignature.ticks)}>
-        {`${timeSignature.timeSignature[0]}/${timeSignature.timeSignature[1]}`}
-      </div>
-    {/each}
+        {#each data.timeSignatures as timeSignature}
+          <div class="signature" style={offset(timeSignature.ticks)}>
+            {`${timeSignature.timeSignature[0]}/${timeSignature.timeSignature[1]}`}
+          </div>
+        {/each}
 
-    {#each data.quarterNotes as quarterNote}
-      <div
-        role="button"
-        class="note"
-        tabindex="0"
-        on:click={() => goToTick(quarterNote.tick)}
-        on:keydown={(e) => e.key === "Enter" && goToTick(quarterNote.tick)}
-        style={noteStyle(quarterNote)}
-      >
-        |
+        {#each data.quarterNotes as quarterNote}
+          <div
+            role="button"
+            class="note"
+            tabindex="0"
+            on:click={() => goToTick(quarterNote.tick)}
+            on:keydown={(e) => e.key === "Enter" && goToTick(quarterNote.tick)}
+            style={noteStyle(quarterNote)}
+          >
+            |
+          </div>
+        {/each}
       </div>
-    {/each}
+      <div class="tracks">
+        {#each data.tracks as track, i}
+          <div class="track" style="top: {(i + 1) * 60}px">
+            TRACK: {track.number}
+            {track.name}
+          </div>
+        {/each}
+      </div>
+      <div class="cursor" style={offset($midiEvent.tick)}></div>
+    </div>
   </div>
 </div>
 
 <style>
+  .timeline-wrap {
+    position: relative;
+    margin: 0 1em;
+  }
+  .timeline-card {
+    position: relative;
+    padding: 1em 0;
+  }
   .timeline {
     margin-top: 60px;
     margin-bottom: 60px;
@@ -124,7 +146,7 @@
   .timeline::before {
     content: "";
     position: absolute;
-    top: 25%;
+    top: 9%;
     left: 0;
     width: 100%;
     height: 1px;
@@ -134,8 +156,7 @@
   .cursor {
     position: absolute;
     top: 0;
-    left: 0;
-    height: 100px;
+    height: 100%;
     width: 20px;
     border-left: 2px dashed green;
     color: black;
@@ -161,5 +182,17 @@
     top: -20pt;
     font-size: 10pt;
     color: rgb(65, 100, 124);
+  }
+  .scala {
+    position: relative;
+    height: 55px;
+  }
+  .tracks {
+    position: relative;
+    margin-top: 40px;
+  }
+  .track {
+    border: 1px solid #cacae6;
+    background-color: #e9fff8;
   }
 </style>

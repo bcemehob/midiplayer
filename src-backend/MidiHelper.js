@@ -74,6 +74,7 @@ function analyze(_, res) {
     timeSignatures: midiAnalyzis.header.timeSignatures,
     totalTicks: midiAnalyzis.durationTicks,
     ppqn: midiAnalyzis.header.ppq,
+    tracks: midiAnalyzis.tracks,
     lastTickTime: lastTickTime(midiAnalyzis)
   })
 }
