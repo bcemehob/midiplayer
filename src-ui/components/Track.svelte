@@ -21,7 +21,7 @@
         class="note"
         style="left: {(note.ticks * 100) / totalTicks}%; top: 10px;"
       >
-        *
+        ◆
       </span>
     {/each}
   </div>
@@ -36,5 +36,6 @@
   }
   .note {
     position: absolute;
+    font-size: 5pt;
   }
 </style>
