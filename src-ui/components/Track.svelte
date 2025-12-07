@@ -7,8 +7,9 @@
 </script>
 
 <div class="track-label" style="top: {(index + 1) * 60}px">
-  TRACK:{track.name}
+  Instrument: {track.name}
 </div>
+<div class="track-info">track info</div>
 <div
   class="track"
   style="top: {(index + 1) * 60}px; background-color: {colors[index]}"
@@ -31,6 +32,17 @@
     border: 1px solid #cacae6;
     margin: 0.5em 0;
     padding: 0.5em 0;
+  }
+  .track-label {
+    font-weight: bold;
+    color: #642;
+    font-size: 8pt;
+  }
+  .track-info{
+    font-size: 7pt;
+    border: 1px solid lavender;
+    padding: 3px;
+    line-height: 5pt;
   }
   .note {
     position: absolute;
