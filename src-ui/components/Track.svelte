@@ -1,10 +1,11 @@
 <script>
   // @ts-nocheck
   import TrackInfo from "./TrackInfo.svelte"
+  import { offset } from "../helpers/timeline"
+  import { totalTicks } from "../store"
 
   export let track = null
   export let index = null
-  export let totalTicks = 0
   const colors = ["#e9fff8", "#ffe9f8", "#f8e9ff"]
 </script>
 
@@ -20,7 +21,7 @@
     {#each track.notes as note}
       <span
         class="note"
-        style="left: {(note.ticks * 100) / totalTicks}%; top: 10px;"
+        style={`${offset(note.ticks, $totalTicks)}; top: 10px;`}
       >
         ◆
       </span>

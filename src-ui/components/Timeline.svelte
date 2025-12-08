@@ -2,11 +2,13 @@
   // @ts-nocheck
   import { onMount, onDestroy } from "svelte"
   import { goToTick } from "../helpers/playback"
+  import { offset } from "../helpers/timeline"
   import {
     currentTimeMs,
     midiEvent,
     midiEvents,
     latestStartTick,
+    totalTicks,
   } from "../store"
   import Track from "./Track.svelte"
   export let analyzis = null
@@ -59,6 +61,7 @@
     data.tempos = analyzis.tempos
     data.timeSignatures = analyzis.timeSignatures
     data.tracks = analyzis.tracks
+    totalTicks.set(analyzis.totalTicks)
     getQuarterNotes(getMeasureStarts())
   }
 
@@ -72,10 +75,6 @@
     )
   }
 
-  function offset(tick) {
-    const offset = (tick / data.totalTicks) * 100
-    return `left:${offset}%`
-  }
 </script>
 
 <div class="card timeline-card">
@@ -84,13 +83,13 @@
     <div class="timeline">
       <div class="scala">
         {#each data.tempos as tempo}
-          <div class="tempo" style={offset(tempo.ticks)}>
+          <div class="tempo" style={offset(tempo.ticks, data.totalTicks)}>
             bpm: {tempo.bpm.toFixed(1)}
           </div>
         {/each}
 
         {#each data.timeSignatures as timeSignature}
-          <div class="signature" style={offset(timeSignature.ticks)}>
+          <div class="signature" style={offset(timeSignature.ticks, data.totalTicks)}>
             {`${timeSignature.timeSignature[0]}/${timeSignature.timeSignature[1]}`}
           </div>
         {/each}
@@ -102,7 +101,7 @@
             tabindex="0"
             on:click={() => goToTick(quarterNote.tick)}
             on:keydown={(e) => e.key === "Enter" && goToTick(quarterNote.tick)}
-            style={offset(quarterNote.tick)}
+            style={offset(quarterNote.tick, data.totalTicks)}
           >
           </div>
         {/each}
@@ -112,7 +111,7 @@
           <Track {track} {index} totalTicks={data.totalTicks}/>
         {/each}
       </div>
-      <div class="cursor" style={offset($midiEvent.tick)}></div>
+      <div class="cursor" style={offset($midiEvent.tick, data.totalTicks)}></div>
     </div>
   </div>
 </div>

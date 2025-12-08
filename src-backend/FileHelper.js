@@ -28,7 +28,7 @@ async function handleArchive(req, res) {
 }
 
 function prepareSuccessResponse(res, isNewArchive) {
-  events.emit('projectChanged', {project: paths.timestamp})
+  events.emit('projectChanged', { project: paths.timestamp })
   res.json({
     message: isNewArchive ? "Archive processed" : "Latest archive found",
     folder: paths.timestamp,
@@ -63,6 +63,17 @@ function storeFile(entry) {
 
 async function getFile(path) {
   return await fsp.readFile(path)
+}
+
+async function getOrCreateFile(path) {
+  try {
+    return await fsp.readFile(path, "utf8")
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err
+    const content = "[]"
+    await fsp.writeFile(path, content, "utf8")
+    return content
+  }
 }
 
 function download(req, res) {
@@ -112,7 +123,7 @@ function latestBundle(_, res) {
     res.json({})
     return
   }
-  if (paths.timestamp){
+  if (paths.timestamp) {
     prepareSuccessResponse(res)
     return
   }
@@ -145,6 +156,7 @@ module.exports = {
   handleArchive,
   storeArchive,
   getFile,
+  getOrCreateFile,
   latestBundle,
   projects,
   project,

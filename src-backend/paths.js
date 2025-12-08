@@ -14,6 +14,9 @@ const paths = {
   fullMidiPath() {
     return path.join(this.folderPath, String(this.timestamp), String(this.midi))
   },
+  fullPath(fileName){
+    return path.join(this.folderPath, String(this.timestamp), String(fileName))
+  },
   reset() {
     this.midi = null
     this.audio = null

@@ -10,6 +10,8 @@ const {
   deleteProject
 } = require("./FileHelper")
 const paths = require("./paths")
+const {track} = require("./TrackHelper")
+
 
 const { registerUiClient, emitEvent } = require("./SSEHelper")
 const { play, stop, pause, analyze, jump, resetPlayer } = require("./MidiHelper")
@@ -33,6 +35,7 @@ function createServer() {
   app.get("/api/stop", stop)
   app.get("/api/pause", pause)
   app.get("/api/jump", jump)
+  app.get("/api/track/:index", track)
   return app
 }
 
