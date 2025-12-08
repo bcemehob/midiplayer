@@ -76,14 +76,6 @@
     const offset = (tick / data.totalTicks) * 100
     return `left:${offset}%`
   }
-
-  function noteStyle(quarterNote) {
-    let style = offset(quarterNote.tick)
-    if (quarterNote.isMeasureStart) {
-      style += ";font-weight:bold;font-size:16pt;color:#661c6f"
-    }
-    return style
-  }
 </script>
 
 <div class="card timeline-card">
@@ -106,13 +98,12 @@
         {#each data.quarterNotes as quarterNote}
           <div
             role="button"
-            class="note"
+            class={`note${quarterNote.isMeasureStart ? " measure" : ""}`}
             tabindex="0"
             on:click={() => goToTick(quarterNote.tick)}
             on:keydown={(e) => e.key === "Enter" && goToTick(quarterNote.tick)}
-            style={noteStyle(quarterNote)}
+            style={offset(quarterNote.tick)}
           >
-            |
           </div>
         {/each}
       </div>
@@ -162,10 +153,17 @@
   }
   .note {
     position: absolute;
-    top: 0;
-    height: 100%;
+    top: 35%;
+    height: 30%;
+    width: 100%;
+    border-left: 1px solid #7974c0;
     color: black;
     cursor: pointer;
+  }
+  .note.measure {
+    top: 30%;
+    height: 40%;
+    border-left: 2px solid #0b0924;
   }
   .tempo {
     position: absolute;
