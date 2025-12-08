@@ -1,5 +1,7 @@
 <script>
   // @ts-nocheck
+  import TrackInfo from "./TrackInfo.svelte"
+
   export let track = null
   export let index = null
   export let totalTicks = 0
@@ -9,7 +11,7 @@
 <div class="track-label" style="top: {(index + 1) * 60}px">
   Instrument: {track.name}
 </div>
-<div class="track-info">track info</div>
+<TrackInfo {index} />
 <div
   class="track"
   style="top: {(index + 1) * 60}px; background-color: {colors[index]}"
@@ -37,12 +39,6 @@
     font-weight: bold;
     color: #642;
     font-size: 8pt;
-  }
-  .track-info{
-    font-size: 7pt;
-    border: 1px solid lavender;
-    padding: 3px;
-    line-height: 5pt;
   }
   .note {
     position: absolute;
