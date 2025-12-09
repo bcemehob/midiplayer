@@ -1,5 +1,5 @@
-const Properties = {
+const properties = {
     storedFoldersName: 'extracted',
     uploads: 'uploads'
 }
-module.exports = Properties
+module.exports = properties

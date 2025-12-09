@@ -8,13 +8,13 @@ const {
   projects,
   project,
   deleteProject
-} = require("./FileHelper")
+} = require("./helpers/file")
 const paths = require("./paths")
-const {track} = require("./TrackHelper")
+const {track} = require("./helpers/track")
 
 
-const { registerUiClient, emitEvent } = require("./SSEHelper")
-const { play, stop, pause, analyze, jump, resetPlayer } = require("./MidiHelper")
+const { registerUiClient, emitEvent } = require("./helpers/sse")
+const { play, stop, pause, analyze, jump, resetPlayer } = require("./helpers/midi")
 const events = require('./events')
 
 events.on('projectChanged', async () => resetPlayer(paths.fullMidiPath(), emitEvent, await getFile(paths.fullMidiPath())))

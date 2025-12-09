@@ -1,5 +1,5 @@
 const path = require("path")
-const Properties = require("./Properties")
+const properties = require("./properties")
 
 const rootDir = path.resolve(__dirname, "..")
 
@@ -10,7 +10,7 @@ const paths = {
   timestamp: null,
   rootDir: rootDir,
   pathToStatic: path.join(rootDir, "dist"),
-  folderPath: path.join(process.cwd(), Properties.storedFoldersName),
+  folderPath: path.join(process.cwd(), properties.storedFoldersName),
   fullMidiPath() {
     return path.join(this.folderPath, String(this.timestamp), String(this.midi))
   },

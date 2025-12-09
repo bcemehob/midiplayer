@@ -1,4 +1,4 @@
-const { createServer } = require("./src-backend/server.js");
+const { createServer } = require("./src-backend/server");
 
 const app = createServer();
 

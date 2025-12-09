@@ -3,18 +3,18 @@ const fs = require("fs")
 const fsp = require("fs/promises")
 const unzipper = require("unzipper")
 const multer = require("multer")
-const Properties = require("./Properties")
-const paths = require("./paths")
-const events = require('./events')
+const properties = require("../properties")
+const paths = require("../paths")
+const events = require('../events')
 
-const upload = multer({ dest: `${Properties.uploads}/` })
+const upload = multer({ dest: `${properties.uploads}/` })
 const storeArchive = upload.single("archive")
 
 async function handleArchive(req, res) {
   try {
     const zipPath = req.file.path
     paths.timestamp = Date.now().toString()
-    paths.extract = path.join(Properties.storedFoldersName, paths.timestamp)
+    paths.extract = path.join(properties.storedFoldersName, paths.timestamp)
     fs.mkdirSync(paths.extract, { recursive: true })
     fs.createReadStream(zipPath)
       .pipe(unzipper.Parse())
@@ -106,7 +106,7 @@ function storedProjects() {
 
 function bundle(folder, res) {
   paths.timestamp = folder
-  paths.extract = path.join(Properties.storedFoldersName, paths.timestamp)
+  paths.extract = path.join(properties.storedFoldersName, paths.timestamp)
   const files = fs.readdirSync(path.join(paths.folderPath, paths.timestamp), { withFileTypes: true })
     .filter(entry => entry.isFile())
     .map(entry => entry.name)
@@ -137,7 +137,7 @@ function latestBundle(_, res) {
 
 function deleteProject(req, res) {
   const { folder } = req.params
-  folderPath = path.join(process.cwd(), Properties.storedFoldersName, folder)
+  folderPath = path.join(process.cwd(), properties.storedFoldersName, folder)
   fs.rm(folderPath, { recursive: true, force: true }, (err) => {
     if (err) {
       console.error("Error deleting folder:", err)
@@ -148,7 +148,7 @@ function deleteProject(req, res) {
 }
 
 function filePath(folder, file) {
-  return path.join(process.cwd(), Properties.storedFoldersName, folder, file)
+  return path.join(process.cwd(), properties.storedFoldersName, folder, file)
 }
 
 module.exports = {
