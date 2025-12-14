@@ -66,7 +66,12 @@ function storeFile(entry) {
     entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.midi)))
   } else if (type === "File" && fileName.match(/\.(mp3|wav|ogg)$/i)) {
     paths.audio = path.basename(fileName)
-    entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.audio)))
+    entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.audio)))    
+  } else if (type === "File" && fileName.match(/\.json$/i)) {
+    if (!paths.tracks) paths.tracks = []
+    const filePath = path.basename(fileName)
+    paths.tracks.push(filePath)
+    entry.pipe(fs.createWriteStream(path.join(paths.extract, filePath)))
   } else {
     entry.autodrain()
   }

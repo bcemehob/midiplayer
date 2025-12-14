@@ -145,7 +145,7 @@
   }
 </script>
 
-<input type="file" bind:files accept=".zip" on:change={upload} />
+<input type="file" bind:files accept=".zip, .mpr" on:change={upload} />
 <div>
   <select bind:value={selectedProject} on:change={changeProject}>
     {#each projects as opt}
