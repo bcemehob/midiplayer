@@ -145,7 +145,7 @@
     position: absolute;
     top: 0;
     height: 100%;
-    width: 20px;
+    width: 2px;
     border-left: 2px dashed green;
     color: black;
     cursor: pointer;
