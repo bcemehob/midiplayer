@@ -1,7 +1,8 @@
 const express = require("express")
 const { 
   download, 
-  handleArchive, 
+  handleArchive,
+  compressCurrentProject,
   storeArchive, 
   getFile, 
   latestBundle,
@@ -24,6 +25,7 @@ function createServer() {
   app.use(express.static(paths.pathToStatic))
   app.use("/files", express.static(paths.folderPath))
   app.post("/api/upload", storeArchive, handleArchive)
+  app.post("/api/compress", compressCurrentProject)
   app.get("/api/download/:folder/:file", download)
   app.get("/api/analyze", analyze)
   app.get("/api/start", play)

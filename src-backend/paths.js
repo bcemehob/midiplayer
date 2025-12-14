@@ -17,6 +17,9 @@ const paths = {
   fullPath(fileName){
     return path.join(this.folderPath, String(this.timestamp), String(fileName))
   },
+  archivePath(){
+    return path.join(process.cwd(), properties.storedArchivesName, `${this.timestamp}.mpr`)
+  },
   reset() {
     this.midi = null
     this.audio = null

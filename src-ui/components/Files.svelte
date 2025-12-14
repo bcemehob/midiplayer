@@ -26,7 +26,7 @@
         clearInterval(retryInterval)
         retryInterval = null
       }
-      dispatch('backendStatus', { ready: true})
+      dispatch('backendStatus', { ready: true })
       const res = await fetch("/api/projects")
       projects = await res.json()
       selectedProject = latestProject.folder && Number(latestProject.folder)
@@ -62,7 +62,7 @@
     })
     const data = await res.json()
     selectedProject = Number(data.folder)
-    projects.push({value: selectedProject, label: selectedProject})
+    projects.push({ value: selectedProject, label: selectedProject })
     await emitProjectData(data.folder, data.midiFile, data.audioFile)
   }
 
@@ -84,6 +84,29 @@
       latestProject.midiFile,
       latestProject.audioFile,
     )
+  }
+
+  async function compressProject() {
+    if (!confirm("Are you sure you want to compress this project?")) return
+    const resp = await fetch("/api/compress", { method: "POST" })
+    downloadFile(await resp.blob(), projectFileName(resp))
+  }
+
+  function downloadFile(blob, fileName) {
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = fileName
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+  }
+
+  function projectFileName(resp) {
+    const disposition = resp.headers.get("Content-Disposition") || ""
+    const match = disposition.match(/filename="?([^"]+)"?/)
+    return !match || match.length < 2 ? "current_project.mpr" : match[1]
   }
 
   async function emitProjectData(folder, midiFile, audioFile) {
@@ -131,3 +154,4 @@
   </select>
 </div>
 <button class="sym" on:click={deleteProject}>⌫</button>
+<button class="sym" on:click={compressProject}>⤓</button>

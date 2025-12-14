@@ -6,6 +6,9 @@ const multer = require("multer")
 const properties = require("../properties")
 const paths = require("../paths")
 const events = require('../events')
+const AdmZip = require('adm-zip');
+const zip = new AdmZip();
+
 
 const upload = multer({ dest: `${properties.uploads}/` })
 const storeArchive = upload.single("archive")
@@ -25,6 +28,14 @@ async function handleArchive(req, res) {
     console.log(err)
     res.status(500).json({ error: "Server error" })
   }
+}
+
+function compressCurrentProject(_, res) {
+  const projectPath = path.join(paths.folderPath, paths.timestamp)
+  zip.addLocalFolder(projectPath)
+  const pathToArchive = paths.archivePath()
+  zip.writeZip(pathToArchive)
+  downloadFile(pathToArchive, res)
 }
 
 function prepareSuccessResponse(res, isNewArchive) {
@@ -78,7 +89,11 @@ async function getOrCreateFile(path) {
 
 function download(req, res) {
   const { folder, file } = req.params
-  res.download(filePath(folder, file), file, (err) => {
+  downloadFile(filePath(folder, file), res)
+}
+
+function downloadFile(pathToArchive, res) {
+  res.download(pathToArchive, (err) => {
     if (err) {
       res.status(404).json({ error: "File not found" })
     }
@@ -154,6 +169,7 @@ function filePath(folder, file) {
 module.exports = {
   download,
   handleArchive,
+  compressCurrentProject,
   storeArchive,
   getFile,
   getOrCreateFile,
