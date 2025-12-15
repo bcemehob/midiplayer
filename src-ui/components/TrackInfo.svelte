@@ -3,6 +3,7 @@
   import { onMount } from "svelte"
   import { offset } from "../helpers/timeline"
   import { totalTicks } from "../store"
+    import Party from "./Party.svelte"
 
   export let index
 
@@ -23,7 +24,7 @@
 <div class="track-info" on:click={addInfo}>
   Track {index} info
   {#each parties as party}
-    <div class="party" style={offset(party.ticks, $totalTicks)}>{party.name}</div>
+  <Party {party} />
   {/each}
 </div>
 
@@ -34,10 +35,5 @@
     padding: 3px;
     line-height: 5pt;
     cursor: pointer;
-  }
-  .track-info .party {
-    position: absolute;
-    display: inline-block;
-    border: 1px solid blue;
   }
 </style>
