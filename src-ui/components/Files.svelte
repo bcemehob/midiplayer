@@ -2,6 +2,9 @@
   // @ts-nocheck
 
   import { createEventDispatcher, onMount, onDestroy } from "svelte"
+  import { downloadFile } from "../helpers/file"
+  import { formattedDateTime } from "../util/datetime"
+  
 
   const dispatch = createEventDispatcher()
   let files
@@ -26,7 +29,7 @@
         clearInterval(retryInterval)
         retryInterval = null
       }
-      dispatch('backendStatus', { ready: true })
+      dispatch("backendStatus", { ready: true })
       const res = await fetch("/api/projects")
       projects = await res.json()
       selectedProject = latestProject.folder && Number(latestProject.folder)
@@ -92,17 +95,6 @@
     downloadFile(await resp.blob(), projectFileName(resp))
   }
 
-  function downloadFile(blob, fileName) {
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = fileName
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
-    URL.revokeObjectURL(url)
-  }
-
   function projectFileName(resp) {
     const disposition = resp.headers.get("Content-Disposition") || ""
     const match = disposition.match(/filename="?([^"]+)"?/)
@@ -130,26 +122,13 @@
     const blob = await new Response(audioResponse.body).blob()
     return URL.createObjectURL(blob)
   }
-
-  const getFormattedDateTime = (timestamp) => {
-    const date = new Date(timestamp)
-    const formatted = date.toLocaleDateString("et-EE", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    })
-    return formatted
-  }
 </script>
 
 <input type="file" bind:files accept=".zip, .mpr" on:change={upload} />
 <div>
   <select bind:value={selectedProject} on:change={changeProject}>
     {#each projects as opt}
-      <option value={opt.value}>{getFormattedDateTime(opt.label)}</option>
+      <option value={opt.value}>{formattedDateTime(opt.label)}</option>
     {/each}
   </select>
 </div>
