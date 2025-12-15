@@ -2,13 +2,19 @@
   // @ts-nocheck
 
   import { createEventDispatcher, onMount, onDestroy } from "svelte"
-  import { downloadAudio, loadAnalysis, compressProject, loadLatest } from "../helpers/file"
+  import {
+    downloadAudio,
+    loadAnalysis,
+    compressProject,
+    loadLatest,
+  } from "../helpers/file"
   import { formattedDateTime } from "../util/datetime"
-  
+  import DragNDrop from "./DragNDrop.svelte"
 
   const dispatch = createEventDispatcher()
   let files
   let file
+  let fileInput
   let folder
   let midiFile
   let audioFile
@@ -21,6 +27,11 @@
   onDestroy(() => {
     if (retryInterval) clearInterval(retryInterval)
   })
+
+  function selectFile() {
+    console.log(fileInput)
+    fileInput.click()
+  }
 
   async function tryLoad() {
     try {
@@ -44,8 +55,12 @@
     }
   }
 
-  async function upload() {
+  async function onInputFile() {
     file = files?.[0]
+    await upload(file)
+  }
+
+  async function upload(file) {
     if (!file) {
       alert("Select file first!")
       return
@@ -93,7 +108,14 @@
   }
 </script>
 
-<input type="file" bind:files accept=".zip, .mpr" on:change={upload} />
+<input
+  type="file"
+  bind:files
+  bind:this={fileInput}
+  accept=".zip, .mpr"
+  on:change={onInputFile}
+/>
+<DragNDrop onDrop={upload} onClick={selectFile}></DragNDrop>
 <div>
   <select bind:value={selectedProject} on:change={changeProject}>
     {#each projects as opt}
@@ -103,3 +125,9 @@
 </div>
 <button class="sym" on:click={deleteProject}>⌫</button>
 <button class="sym" on:click={compressProject}>⤓</button>
+
+<style>
+  input[type="file"] {
+    display: none;
+  }
+</style>
