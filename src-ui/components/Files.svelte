@@ -2,7 +2,7 @@
   // @ts-nocheck
 
   import { createEventDispatcher, onMount, onDestroy } from "svelte"
-  import { downloadFile } from "../helpers/file"
+  import { downloadAudio, loadAnalysis, compressProject, loadLatest } from "../helpers/file"
   import { formattedDateTime } from "../util/datetime"
   
 
@@ -44,12 +44,6 @@
     }
   }
 
-  async function loadLatest() {
-    const res = await fetch("/api/latest")
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    return await res.json()
-  }
-
   async function upload() {
     file = files?.[0]
     if (!file) {
@@ -89,18 +83,6 @@
     )
   }
 
-  async function compressProject() {
-    if (!confirm("Are you sure you want to compress this project?")) return
-    const resp = await fetch("/api/compress", { method: "POST" })
-    downloadFile(await resp.blob(), projectFileName(resp))
-  }
-
-  function projectFileName(resp) {
-    const disposition = resp.headers.get("Content-Disposition") || ""
-    const match = disposition.match(/filename="?([^"]+)"?/)
-    return !match || match.length < 2 ? "current_project.mpr" : match[1]
-  }
-
   async function emitProjectData(folder, midiFile, audioFile) {
     dispatch("updated", {
       fileName: midiFile,
@@ -108,19 +90,6 @@
       audioUrl: await downloadAudio(folder, audioFile),
       analyzis: await loadAnalysis(),
     })
-  }
-
-  async function loadAnalysis() {
-    const res = await fetch("/api/analyze")
-    return await res.json()
-  }
-
-  async function downloadAudio(folder, audioFile) {
-    const audioResponse = await fetch(
-      `/api/download/${encodeURIComponent(folder)}/${encodeURIComponent(audioFile)}`,
-    )
-    const blob = await new Response(audioResponse.body).blob()
-    return URL.createObjectURL(blob)
   }
 </script>
 
