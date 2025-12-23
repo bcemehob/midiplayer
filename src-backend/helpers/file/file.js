@@ -23,7 +23,10 @@ async function handleArchive(req, res) {
       .pipe(unzipper.Parse())
       .on("entry", storeUnzippedEntry)
       .on("error", err => handleFileProcessingError(err, res))
-      .on("close", () => prepareSuccessResponse(res, true))
+      .on("close", () => {
+        events.emit('projectChanged', { project: paths.timestamp })
+        res.json(paths.successResponse(true))
+      })
   } catch (err) {
     console.log(err)
     res.status(500).json({ error: "Server error" })
@@ -36,11 +39,6 @@ function compressCurrentProject(_, res) {
   const pathToArchive = paths.archivePath()
   zip.writeZip(pathToArchive)
   downloadFile(pathToArchive, res)
-}
-
-function prepareSuccessResponse(res, isNewArchive) {
-  events.emit('projectChanged', { project: paths.timestamp })
-  res.json(paths.successResponse(isNewArchive))
 }
 
 function handleFileProcessingError(err, res) {
@@ -61,7 +59,7 @@ function storeUnzippedEntry(entry) {
     entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.midi)))
   } else if (type === "File" && fileName.match(/\.(mp3|wav|ogg)$/i)) {
     paths.audio = path.basename(fileName)
-    entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.audio)))    
+    entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.audio)))
   } else if (type === "File" && fileName.match(/\.json$/i)) {
     if (!paths.tracks) paths.tracks = []
     const filePath = path.basename(fileName)
@@ -129,7 +127,8 @@ function bundle(folder, res) {
   paths.midi = path.basename(midiFile)
   const audioFile = files.find(f => ['.mp3', '.wav', '.ogg'].some(ext => f.toLowerCase().endsWith(ext)))
   paths.audio = path.basename(audioFile)
-  return prepareSuccessResponse(res)
+  events.emit('projectChanged', { project: paths.timestamp })
+  res.json(paths.successResponse())
 }
 
 function latestBundle(_, res) {
@@ -139,7 +138,8 @@ function latestBundle(_, res) {
     return
   }
   if (paths.timestamp) {
-    prepareSuccessResponse(res)
+    events.emit('projectChanged', { project: paths.timestamp })
+    res.json(paths.successResponse())
     return
   }
   try {
