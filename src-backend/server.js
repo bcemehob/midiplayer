@@ -9,7 +9,7 @@ const {
   projects,
   project,
   deleteProject
-} = require("./helpers/file")
+} = require("./helpers/file/file")
 const paths = require("./paths")
 const {track} = require("./helpers/track")
 

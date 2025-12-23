@@ -3,9 +3,9 @@ const fs = require("fs")
 const fsp = require("fs/promises")
 const unzipper = require("unzipper")
 const multer = require("multer")
-const properties = require("../properties")
-const paths = require("../paths")
-const events = require('../events')
+const properties = require("../../properties")
+const paths = require("../../paths")
+const events = require('../../events')
 const AdmZip = require('adm-zip');
 const zip = new AdmZip();
 

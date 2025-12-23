@@ -1,5 +1,5 @@
 const paths = require("../paths")
-const { getOrCreateFile } = require("./file") 
+const { getOrCreateFile } = require("./file/file") 
 
 async function track(req, res) {
     const { index } = req.params
