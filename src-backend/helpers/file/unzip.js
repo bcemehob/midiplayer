@@ -1,0 +1,31 @@
+const path = require("path")
+const paths = require("../../paths")
+const fs = require("fs")
+
+function storeUnzippedEntry(entry) {
+  const fileName = entry.path
+  const type = entry.type
+  if (fileName.startsWith("__MACOSX/") || fileName.endsWith(".DS_Store")) {
+    entry.autodrain()
+    return
+  }
+
+  if (type === "File" && fileName.match(/\.(mid|midi)$/i)) {
+    paths.midi = path.basename(fileName)
+    entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.midi)))
+  } else if (type === "File" && fileName.match(/\.(mp3|wav|ogg)$/i)) {
+    paths.audio = path.basename(fileName)
+    entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.audio)))
+  } else if (type === "File" && fileName.match(/\.json$/i)) {
+    if (!paths.tracks) paths.tracks = []
+    const filePath = path.basename(fileName)
+    paths.tracks.push(filePath)
+    entry.pipe(fs.createWriteStream(path.join(paths.extract, filePath)))
+  } else {
+    entry.autodrain()
+  }
+}
+
+module.exports = {
+    storeUnzippedEntry
+}
