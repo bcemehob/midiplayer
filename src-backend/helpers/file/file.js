@@ -21,7 +21,7 @@ async function handleArchive(req, res) {
     fs.mkdirSync(paths.extract, { recursive: true })
     fs.createReadStream(zipPath)
       .pipe(unzipper.Parse())
-      .on("entry", storeFile)
+      .on("entry", storeUnzippedEntry)
       .on("error", err => handleFileProcessingError(err, res))
       .on("close", () => prepareSuccessResponse(res, true))
   } catch (err) {
@@ -40,12 +40,7 @@ function compressCurrentProject(_, res) {
 
 function prepareSuccessResponse(res, isNewArchive) {
   events.emit('projectChanged', { project: paths.timestamp })
-  res.json({
-    message: isNewArchive ? "Archive processed" : "Latest archive found",
-    folder: paths.timestamp,
-    midiFile: paths.midi,
-    audioFile: paths.audio
-  })
+  res.json(paths.successResponse(isNewArchive))
 }
 
 function handleFileProcessingError(err, res) {
@@ -53,7 +48,7 @@ function handleFileProcessingError(err, res) {
   res.status(500).json({ error: "Failed to unzip file" })
 }
 
-function storeFile(entry) {
+function storeUnzippedEntry(entry) {
   const fileName = entry.path
   const type = entry.type
   if (fileName.startsWith("__MACOSX/") || fileName.endsWith(".DS_Store")) {

@@ -14,11 +14,19 @@ const paths = {
   fullMidiPath() {
     return path.join(this.folderPath, String(this.timestamp), String(this.midi))
   },
-  fullPath(fileName){
+  fullPath(fileName) {
     return path.join(this.folderPath, String(this.timestamp), String(fileName))
   },
-  archivePath(){
+  archivePath() {
     return path.join(process.cwd(), properties.storedArchivesName, `${this.timestamp}.mpr`)
+  },
+  successResponse(isNewArchive) {
+    return {
+      message: isNewArchive ? "Archive processed" : "Latest archive found",
+      folder: this.timestamp,
+      midiFile: this.midi,
+      audioFile: this.audio
+    }
   },
   reset() {
     this.midi = null
