@@ -1,33 +1,24 @@
 const path = require("path")
 const fs = require("fs")
 const fsp = require("fs/promises")
-const unzipper = require("unzipper")
 const multer = require("multer")
 const properties = require("../../properties")
 const paths = require("../../paths")
 const events = require('../../events')
 const AdmZip = require('adm-zip');
 const zip = new AdmZip();
-const {storeUnzippedEntry} = require("./unzip")
+const { unzipArchive } = require("./unzip")
 
 
 const upload = multer({ dest: `${properties.uploads}/` })
 const storeArchive = upload.single("archive")
 
 async function handleArchive(req, res) {
+  paths.setCurrentFolder(Date.now().toString())
   try {
-    const zipPath = req.file.path
-    paths.timestamp = Date.now().toString()
-    paths.extract = path.join(properties.storedFoldersName, paths.timestamp)
-    fs.mkdirSync(paths.extract, { recursive: true })
-    fs.createReadStream(zipPath)
-      .pipe(unzipper.Parse())
-      .on("entry", storeUnzippedEntry)
-      .on("error", err => handleFileProcessingError(err, res))
-      .on("close", () => {
-        events.emit('projectChanged', { project: paths.timestamp })
-        res.json(paths.successResponse(true))
-      })
+    await unzipArchive(req.file.path)
+    events.emit('projectChanged', { project: paths.timestamp })
+    res.json(paths.successResponse(true))
   } catch (err) {
     console.log(err)
     res.status(500).json({ error: "Server error" })
@@ -40,11 +31,6 @@ function compressCurrentProject(_, res) {
   const pathToArchive = paths.archivePath()
   zip.writeZip(pathToArchive)
   downloadFile(pathToArchive, res)
-}
-
-function handleFileProcessingError(err, res) {
-  console.log(err)
-  res.status(500).json({ error: "Failed to unzip file" })
 }
 
 async function getFile(path) {
@@ -95,11 +81,11 @@ function storedProjects() {
 }
 
 function bundle(folder, res) {
-  paths.timestamp = folder
-  paths.extract = path.join(properties.storedFoldersName, paths.timestamp)
+  paths.setCurrentFolder(folder)
   const files = fs.readdirSync(path.join(paths.folderPath, paths.timestamp), { withFileTypes: true })
     .filter(entry => entry.isFile())
     .map(entry => entry.name)
+  console.log("Files, folder", files, folder)
   const midiFile = files.find(f => f.toLowerCase().endsWith('.mid') || f.toLowerCase().endsWith('.midi'))
   paths.midi = path.basename(midiFile)
   const audioFile = files.find(f => ['.mp3', '.wav', '.ogg'].some(ext => f.toLowerCase().endsWith(ext)))

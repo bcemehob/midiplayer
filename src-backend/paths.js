@@ -20,6 +20,10 @@ const paths = {
   archivePath() {
     return path.join(process.cwd(), properties.storedArchivesName, `${this.timestamp}.mpr`)
   },
+  setCurrentFolder(folderName){
+    this.timestamp = folderName
+    this.extract = path.join(properties.storedFoldersName, this.timestamp)
+  },
   successResponse(isNewArchive) {
     return {
       message: isNewArchive ? "Archive processed" : "Latest archive found",
