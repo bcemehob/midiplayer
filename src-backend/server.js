@@ -1,6 +1,6 @@
 const express = require("express")
 const { 
-  download, 
+  downloadAudio, 
   handleArchive,
   compressCurrentProject,
   storeArchive, 
@@ -23,10 +23,10 @@ events.on('projectChanged', async () => resetPlayer(paths.fullMidiPath(), emitEv
 function createServer() {
   const app = express()
   app.use(express.static(paths.pathToStatic))
-  app.use("/files", express.static(paths.folderPath))
+  app.use("/files", express.static(paths.folderPath()))
   app.post("/api/upload", storeArchive, handleArchive)
   app.post("/api/compress", compressCurrentProject)
-  app.get("/api/download/:folder/:file", download)
+  app.get("/api/audio", downloadAudio)
   app.get("/api/analyze", analyze)
   app.get("/api/start", play)
   app.get("/api/latest", latestBundle)

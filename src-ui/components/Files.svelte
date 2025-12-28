@@ -102,7 +102,7 @@
     dispatch("updated", {
       fileName: midiFile,
       folderName: folder,
-      audioUrl: await downloadAudio(folder, audioFile),
+      audioUrl: await downloadAudio(),
       analyzis: await loadAnalysis(),
     })
   }

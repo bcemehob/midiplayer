@@ -10,10 +10,8 @@ export function downloadFile(blob, fileName) {
     URL.revokeObjectURL(url)
 }
 
-export async function downloadAudio(folder, audioFile) {
-    const audioResponse = await fetch(
-        `/api/download/${encodeURIComponent(folder)}/${encodeURIComponent(audioFile)}`,
-    )
+export async function downloadAudio() {
+    const audioResponse = await fetch("/api/audio")
     const blob = await new Response(audioResponse.body).blob()
     return URL.createObjectURL(blob)
 }

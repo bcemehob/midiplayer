@@ -10,15 +10,23 @@ const paths = {
   timestamp: null,
   rootDir: rootDir,
   pathToStatic: path.join(rootDir, "dist"),
-  folderPath: path.join(process.cwd(), properties.storedFoldersName),
+  folderPath() {
+    return path.join(process.cwd(), properties.storedFoldersName)
+  },
+  currentFolderPath() {
+    return path.join(this.folderPath(), String(this.timestamp))
+  },
   fullMidiPath() {
-    return path.join(this.folderPath, String(this.timestamp), String(this.midi))
+    return path.join(this.currentFolderPath(), String(this.midi))
+  },
+  fullAudioPath() {
+    return path.join(this.currentFolderPath(), String(this.audio))
   },
   fullPath(fileName) {
-    return path.join(this.folderPath, String(this.timestamp), String(fileName))
+    return path.join(this.currentFolderPath(), String(fileName))
   },
   archivePath() {
-    return path.join(process.cwd(), properties.storedArchivesName, `${this.timestamp}.mpr`)
+    return path.join(this.currentFolderPath(), `${this.timestamp}.mpr`)
   },
   setCurrentFolder(folderName){
     this.timestamp = folderName

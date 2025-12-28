@@ -5,10 +5,9 @@ const multer = require("multer")
 const properties = require("../../properties")
 const paths = require("../../paths")
 const events = require('../../events')
-const AdmZip = require('adm-zip');
-const zip = new AdmZip();
+const AdmZip = require('adm-zip')
+const zip = new AdmZip()
 const { unzipArchive } = require("./unzip")
-
 
 const upload = multer({ dest: `${properties.uploads}/` })
 const storeArchive = upload.single("archive")
@@ -26,8 +25,7 @@ async function handleArchive(req, res) {
 }
 
 function compressCurrentProject(_, res) {
-  const projectPath = path.join(paths.folderPath, paths.timestamp)
-  zip.addLocalFolder(projectPath)
+  zip.addLocalFolder(paths.currentFolderPath())
   const pathToArchive = paths.archivePath()
   zip.writeZip(pathToArchive)
   downloadFile(pathToArchive, res)
@@ -48,9 +46,8 @@ async function getOrCreateFile(path) {
   }
 }
 
-function download(req, res) {
-  const { folder, file } = req.params
-  downloadFile(filePath(folder, file), res)
+function downloadAudio(_, res) {
+  downloadFile(paths.fullAudioPath(), res)
 }
 
 function downloadFile(pathToArchive, res) {
@@ -72,7 +69,7 @@ function project(req, res) {
 }
 
 function storedProjects() {
-  const entries = fs.readdirSync(paths.folderPath, { withFileTypes: true })
+  const entries = fs.readdirSync(paths.folderPath(), { withFileTypes: true })
   return entries
     .filter(entry => entry.isDirectory())
     .map(entry => entry.name)
@@ -82,7 +79,7 @@ function storedProjects() {
 
 function bundle(folder, res) {
   paths.setCurrentFolder(folder)
-  const files = fs.readdirSync(path.join(paths.folderPath, paths.timestamp), { withFileTypes: true })
+  const files = fs.readdirSync(paths.currentFolderPath(), { withFileTypes: true })
     .filter(entry => entry.isFile())
     .map(entry => entry.name)
   console.log("Files, folder", files, folder)
@@ -109,7 +106,7 @@ function latestBundle(_, res) {
     return bundle(String(Math.max(...storedProjects())), res)
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' })
   }
 }
 
@@ -125,12 +122,8 @@ function deleteProject(req, res) {
   res.json({ result: "OK" })
 }
 
-function filePath(folder, file) {
-  return path.join(process.cwd(), properties.storedFoldersName, folder, file)
-}
-
 module.exports = {
-  download,
+  downloadAudio,
   handleArchive,
   compressCurrentProject,
   storeArchive,
