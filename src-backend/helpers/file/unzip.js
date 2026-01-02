@@ -5,7 +5,7 @@ const unzipper = require("unzipper")
 
 
 function unzipArchive(zipPath) {
-    fs.mkdirSync(paths.extract, { recursive: true })
+    fs.mkdirSync(paths.currentFolderPath(), { recursive: true })
     return new Promise((resolve, reject) => {
         const parser = unzipper.Parse()
         parser
@@ -24,18 +24,17 @@ function storeUnzippedEntry(entry) {
         entry.autodrain()
         return
     }
-
     if (type === "File" && fileName.match(/\.(mid|midi)$/i)) {
         paths.midi = path.basename(fileName)
-        entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.midi)))
+        entry.pipe(fs.createWriteStream(paths.fullMidiPath()))
     } else if (type === "File" && fileName.match(/\.(mp3|wav|ogg)$/i)) {
         paths.audio = path.basename(fileName)
-        entry.pipe(fs.createWriteStream(path.join(paths.extract, paths.audio)))
+        entry.pipe(fs.createWriteStream(paths.fullAudioPath()))
     } else if (type === "File" && fileName.match(/\.json$/i)) {
         if (!paths.tracks) paths.tracks = []
         const filePath = path.basename(fileName)
         paths.tracks.push(filePath)
-        entry.pipe(fs.createWriteStream(path.join(paths.extract, filePath)))
+        entry.pipe(fs.createWriteStream(paths.fullPath(filePath)))
     } else {
         entry.autodrain()
     }

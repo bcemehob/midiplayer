@@ -6,9 +6,7 @@ const rootDir = path.resolve(__dirname, "..")
 const paths = {
   midi: null,
   audio: null,
-  extract: null,
   timestamp: null,
-  rootDir: rootDir,
   pathToStatic: path.join(rootDir, "dist"),
   folderPath() {
     return path.join(process.cwd(), properties.storedFoldersName)
@@ -27,10 +25,6 @@ const paths = {
   },
   archivePath() {
     return path.join(this.currentFolderPath(), `${this.timestamp}.mpr`)
-  },
-  setCurrentFolder(folderName){
-    this.timestamp = folderName
-    this.extract = path.join(properties.storedFoldersName, this.timestamp)
   },
   successResponse(isNewArchive) {
     return {

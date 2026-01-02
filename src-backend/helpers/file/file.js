@@ -13,7 +13,7 @@ const upload = multer({ dest: `${properties.uploads}/` })
 const storeArchive = upload.single("archive")
 
 async function handleArchive(req, res) {
-  paths.setCurrentFolder(Date.now().toString())
+  paths.timestamp = Date.now().toString()
   try {
     await unzipArchive(req.file.path)
     events.emit('projectChanged', { project: paths.timestamp })
@@ -78,7 +78,7 @@ function storedProjects() {
 }
 
 function bundle(folder, res) {
-  paths.setCurrentFolder(folder)
+  paths.timestamp = folder
   const files = fs.readdirSync(paths.currentFolderPath(), { withFileTypes: true })
     .filter(entry => entry.isFile())
     .map(entry => entry.name)
