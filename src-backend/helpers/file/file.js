@@ -7,22 +7,10 @@ const paths = require("../../paths")
 const events = require('../../events')
 const AdmZip = require('adm-zip')
 const zip = new AdmZip()
-const { unzipArchive } = require("./unzip")
 
 const upload = multer({ dest: `${properties.uploads}/` })
 const storeArchive = upload.single("archive")
 
-async function handleArchive(req, res) {
-  paths.timestamp = Date.now().toString()
-  try {
-    await unzipArchive(req.file.path)
-    events.emit('projectChanged', { project: paths.timestamp })
-    res.json(paths.successResponse(true))
-  } catch (err) {
-    console.log(err)
-    res.status(500).json({ error: "Server error" })
-  }
-}
 
 function compressCurrentProject(_, res) {
   zip.addLocalFolder(paths.currentFolderPath())
@@ -62,11 +50,6 @@ function projects(_, res) {
   res.json(storedProjects().map(pr => ({ value: pr, label: pr })))
 }
 
-function project(req, res) {
-  const { folder } = req.params
-  console.log("FOLDER", folder)
-  return bundle(folder, res)
-}
 
 function storedProjects() {
   const entries = fs.readdirSync(paths.folderPath(), { withFileTypes: true })
@@ -77,7 +60,7 @@ function storedProjects() {
     .filter(num => !isNaN(num))
 }
 
-function bundle(folder, res) {
+function bundle(folder) {
   paths.timestamp = folder
   const files = fs.readdirSync(paths.currentFolderPath(), { withFileTypes: true })
     .filter(entry => entry.isFile())
@@ -88,7 +71,6 @@ function bundle(folder, res) {
   const audioFile = files.find(f => ['.mp3', '.wav', '.ogg'].some(ext => f.toLowerCase().endsWith(ext)))
   paths.audio = path.basename(audioFile)
   events.emit('projectChanged', { project: paths.timestamp })
-  res.json(paths.successResponse())
 }
 
 function latestBundle(_, res) {
@@ -124,13 +106,12 @@ function deleteProject(req, res) {
 
 module.exports = {
   downloadAudio,
-  handleArchive,
   compressCurrentProject,
   storeArchive,
   getFile,
   getOrCreateFile,
   latestBundle,
   projects,
-  project,
+  bundle,
   deleteProject
 }

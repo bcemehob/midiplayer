@@ -1,13 +1,12 @@
 const express = require("express")
 const { 
   downloadAudio, 
-  handleArchive,
   compressCurrentProject,
   storeArchive, 
   getFile, 
   latestBundle,
   projects,
-  project,
+  bundle,
   deleteProject
 } = require("./helpers/file/file")
 const paths = require("./paths")
@@ -40,5 +39,23 @@ function createServer() {
   app.get("/api/track/:index", track)
   return app
 }
+
+async function handleArchive(req, res) {
+  paths.timestamp = Date.now().toString()
+  try {
+    await unzipArchive(req.file.path)
+    events.emit('projectChanged', { project: paths.timestamp })
+    res.json(paths.successResponse(true))
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ error: "Server error" })
+  }
+}
+
+function project(req, res) {
+  bundle(req.params.folder)
+  res.json(paths.successResponse())
+}
+
 
 module.exports = { createServer }
