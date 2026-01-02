@@ -1,7 +1,7 @@
-const properties = require("../properties")
+const properties = require("../../properties")
 const { Player } = require("midi-player-js")
 const { Midi } = require("@tonejs/midi")
-const events = require('../events')
+const events = require('../../events')
 
 let currentPlayer = null
 let midiAnalyzis = null
