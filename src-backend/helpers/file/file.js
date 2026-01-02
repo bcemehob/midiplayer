@@ -34,6 +34,17 @@ async function getOrCreateFile(path) {
   }
 }
 
+async function createFileIfNotExists(path, content) {
+  try {
+    await fsp.access(path)
+    return
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err
+    await fsp.writeFile(path, content, "utf8")
+    return content
+  }
+}
+
 function downloadAudio(_, res) {
   downloadFile(paths.fullAudioPath(), res)
 }
@@ -110,6 +121,7 @@ module.exports = {
   storeArchive,
   getFile,
   getOrCreateFile,
+  createFileIfNotExists,
   latestBundle,
   projects,
   bundle,

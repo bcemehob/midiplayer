@@ -14,7 +14,8 @@ const {track} = require("./helpers/track")
 
 
 const { registerUiClient, emitEvent } = require("./helpers/sse")
-const { play, stop, pause, analyze, jump, resetPlayer } = require("./helpers/midi/midi")
+const { play, stop, pause, jump, resetPlayer } = require("./helpers/midi/player")
+const { analyze } = require("./helpers/midi/analyzer")
 const events = require('./events')
 
 events.on('projectChanged', async () => resetPlayer(paths.fullMidiPath(), emitEvent, await getFile(paths.fullMidiPath())))
