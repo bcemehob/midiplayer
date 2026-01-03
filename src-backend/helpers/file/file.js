@@ -34,14 +34,22 @@ async function getOrCreateFile(path) {
   }
 }
 
+async function createTrackInfoFiles(tracks) {
+  tracks.forEach((_, i) => createTrack(i))
+}
+
+async function createTrack(index) {
+    const fileContent = '{"parties":[], "timeline":[]}'
+    const fileName = paths.fullPath(`track_${index}.json`)
+    await createFileIfNotExists(fileName, fileContent)
+}
+
 async function createFileIfNotExists(path, content) {
   try {
     await fsp.access(path)
-    return
   } catch (err) {
     if (err.code !== 'ENOENT') throw err
     await fsp.writeFile(path, content, "utf8")
-    return content
   }
 }
 
@@ -122,6 +130,7 @@ module.exports = {
   getFile,
   getOrCreateFile,
   createFileIfNotExists,
+  createTrackInfoFiles,
   latestBundle,
   projects,
   bundle,

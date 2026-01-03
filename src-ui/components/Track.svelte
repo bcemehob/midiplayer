@@ -12,7 +12,7 @@
 <div class="track-label" style="top: {(index + 1) * 60}px">
   Instrument: {track.name}
 </div>
-<TrackInfo {index} />
+<TrackInfo {track} {index} />
 <div
   class="track"
   style="top: {(index + 1) * 60}px; background-color: {colors[index]}"

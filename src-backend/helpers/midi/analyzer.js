@@ -1,8 +1,16 @@
 const { Midi } = require("@tonejs/midi")
+const { getFile, createFileIfNotExists } = require("../file/file")
+const paths = require("../../paths")
+
 let midiAnalyzis = null
 
-function reset(midiFile) {
+async function reset() {
+  const midiFile = await getFile(paths.fullMidiPath())
   midiAnalyzis = new Midi(midiFile)
+}
+
+function midiTracks(){
+    return midiAnalyzis.tracks
 }
 
 function ticksToMsFromStart(ticks) {
@@ -46,4 +54,4 @@ const lastTickTime = midi => {
   return Math.trunc(midi.header.ticksToSeconds(midi.durationTicks) * 1000)
 }
 
-module.exports = { analyze, ticksToMsFromStart, reset }
+module.exports = { analyze, ticksToMsFromStart, reset, midiTracks }

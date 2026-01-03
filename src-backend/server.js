@@ -2,23 +2,24 @@ const express = require("express")
 const { 
   downloadAudio, 
   compressCurrentProject,
-  storeArchive, 
-  getFile, 
+  storeArchive,
+  createTrackInfoFiles,
   latestBundle,
   projects,
   bundle,
   deleteProject
 } = require("./helpers/file/file")
+const { unzipArchive } = require("./helpers/file/unzip")
 const paths = require("./paths")
 const {track} = require("./helpers/track")
 
 
 const { registerUiClient, emitEvent } = require("./helpers/sse")
 const { play, stop, pause, jump, resetPlayer } = require("./helpers/midi/player")
-const { analyze } = require("./helpers/midi/analyzer")
+const { analyze, midiTracks } = require("./helpers/midi/analyzer")
 const events = require('./events')
 
-events.on('projectChanged', async () => resetPlayer(paths.fullMidiPath(), emitEvent, await getFile(paths.fullMidiPath())))
+events.on('projectChanged', async () => resetPlayer(emitEvent))
 
 function createServer() {
   const app = express()
@@ -45,7 +46,8 @@ async function handleArchive(req, res) {
   paths.timestamp = Date.now().toString()
   try {
     await unzipArchive(req.file.path)
-    events.emit('projectChanged', { project: paths.timestamp })
+    resetPlayer(emitEvent)
+    createTrackInfoFiles(midiTracks())
     res.json(paths.successResponse(true))
   } catch (err) {
     console.log(err)

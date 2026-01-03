@@ -6,9 +6,23 @@
   import Party from "./Party.svelte"
 
   export let index
+  export let track
 
   let rawParties
   let partyViews
+
+  $: if (track) {
+    loadTrack(index)
+  }
+
+  async function loadTrack(index) {
+    const res = await fetch(`/api/track/${index}`)
+    rawParties = await res.json()
+
+    if (rawParties.timeline) {
+      partyViews = rawParties.timeline.map(mergePartyView)
+    }
+  }
 
   function addInfo() {
     console.log("ADD for track ", index)
@@ -25,12 +39,6 @@
     }
   }
 
-  onMount(async () => {
-    const res = await fetch(`/api/track/${index}`)
-    rawParties = await res.json()
-    if (!rawParties.timeline) return
-    partyViews = rawParties.timeline.map(mergePartyView)
-  })
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->

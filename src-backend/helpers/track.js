@@ -9,11 +9,5 @@ async function track(req, res) {
     res.json(JSON.parse(fileContent))
 }
 
-async function createTrack(index) {
-    const fileContent = '{"parties":[], "timeline":[]}'
-    const fileName = paths.fullPath(`track_${index}.json`)
-    await createFileIfNotExists(fileName, fileContent)
-
-}
 
 module.exports = { track }

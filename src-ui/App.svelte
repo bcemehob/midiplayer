@@ -17,11 +17,11 @@
 <div class="header">
   <h4>MIDI Player</h4>
   <FileUpload
-    on:backendStatus={(e) => {
+    on:backendStatus={e => {
       backendReady = e.detail.ready
       if (backendReady) sseClient.getEventSource()
     }}
-    on:updated={(e) => {
+    on:updated={e => {
       fileName = e.detail.fileName
       folderName = e.detail.folderName
       audioUrl = e.detail.audioUrl

@@ -1,0 +1,15 @@
+{
+    "parties":[
+        {
+            "id": 0, 
+            "duration": 1000, 
+            "name": "party name"
+        }
+    ],
+    "timeline":[
+        {
+            "partyId": 0,
+            "start": 3333
+        }
+    ]
+}

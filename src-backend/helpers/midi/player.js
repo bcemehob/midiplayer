@@ -1,14 +1,15 @@
 const properties = require("../../properties")
 const { Player } = require("midi-player-js")
 const { reset, ticksToMsFromStart } = require('./analyzer')
+const paths = require("../../paths")
 
 let currentPlayer = null
 
-function resetPlayer(filePath, emitEventFn, midiFile) {
+async function resetPlayer(emitEventFn) {
   currentPlayer = new Player(emitEventFn)
   emitEventFn({tick: 0})
-  currentPlayer.loadFile(filePath)
-  reset(midiFile)
+  currentPlayer.loadFile(paths.fullMidiPath())
+  await reset()
 }
 
 function play(_, res) {
