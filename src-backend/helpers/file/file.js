@@ -11,7 +11,6 @@ const zip = new AdmZip()
 const upload = multer({ dest: `${properties.uploads}/` })
 const storeArchive = upload.single("archive")
 
-
 function compressCurrentProject(_, res) {
   zip.addLocalFolder(paths.currentFolderPath())
   const pathToArchive = paths.archivePath()
@@ -21,17 +20,6 @@ function compressCurrentProject(_, res) {
 
 async function getFile(path) {
   return await fsp.readFile(path)
-}
-
-async function getOrCreateFile(path) {
-  try {
-    return await fsp.readFile(path, "utf8")
-  } catch (err) {
-    if (err.code !== 'ENOENT') throw err
-    const content = "[]"
-    await fsp.writeFile(path, content, "utf8")
-    return content
-  }
 }
 
 async function createTrackInfoFiles(tracks) {
@@ -68,7 +56,6 @@ function downloadFile(pathToArchive, res) {
 function projects(_, res) {
   res.json(storedProjects().map(pr => ({ value: pr, label: pr })))
 }
-
 
 function storedProjects() {
   const entries = fs.readdirSync(paths.folderPath(), { withFileTypes: true })
@@ -128,7 +115,6 @@ module.exports = {
   compressCurrentProject,
   storeArchive,
   getFile,
-  getOrCreateFile,
   createFileIfNotExists,
   createTrackInfoFiles,
   latestBundle,
