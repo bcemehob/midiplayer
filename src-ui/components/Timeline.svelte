@@ -154,7 +154,7 @@
     position: absolute;
     top: 35%;
     height: 30%;
-    width: 100%;
+    width: 0.5em;
     border-left: 1px solid #7974c0;
     color: black;
     cursor: pointer;
