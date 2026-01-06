@@ -8,7 +8,7 @@ export async function goToTick(tick) {
   const res = await fetch(`/api/jump?tick=${tick}`)
   const data = await res.json()
 
-  if ((!!data.currentTimeMs  || data.currentTimeMs === 0) && !Number.isNaN(data.currentTimeMs)) {
+  if ((!!data.currentTimeMs || data.currentTimeMs === 0) && !Number.isNaN(data.currentTimeMs)) {
     const ms = Number(data.currentTimeMs)
     currentTimeMs.set(ms)
     latestStartTick.set(tick)

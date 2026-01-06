@@ -2,7 +2,7 @@
   // @ts-nocheck
   import { onMount } from "svelte"
   import { offset } from "../helpers/timeline"
-  import { totalTicks } from "../store"
+  import { totalTicks, latestStartTick } from "../store"
   import Party from "./Party.svelte"
 
   export let index
@@ -24,8 +24,18 @@
     }
   }
 
-  function addInfo() {
-    console.log("ADD for track ", index)
+  async function addInfo() {
+    const partiesCount = rawParties?.parties?.length || 0
+    const payload = {
+      start: $latestStartTick,
+      name: track.name + partiesCount,
+      duration: 3600
+    }
+    await fetch(`/api/track/${index}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
   }
 
   function getParty(id) {
@@ -38,7 +48,6 @@
       start: timelineElement.start,
     }
   }
-
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
