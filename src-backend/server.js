@@ -11,7 +11,7 @@ const {
 } = require("./helpers/file/file")
 const { unzipArchive } = require("./helpers/file/unzip")
 const paths = require("./paths")
-const {track} = require("./helpers/track")
+const {track, addPartyElement} = require("./helpers/track")
 
 
 const { registerUiClient, emitEvent } = require("./helpers/sse")
@@ -25,6 +25,7 @@ function createServer() {
   const app = express()
   app.use(express.static(paths.pathToStatic))
   app.use("/files", express.static(paths.folderPath()))
+  app.use(express.json())
   app.post("/api/upload", storeArchive, handleArchive)
   app.post("/api/compress", compressCurrentProject)
   app.get("/api/audio", downloadAudio)
@@ -39,6 +40,7 @@ function createServer() {
   app.get("/api/pause", pause)
   app.get("/api/jump", jump)
   app.get("/api/track/:index", track)
+  app.patch("/api/track/:index", addPartyElement)
   return app
 }
 
