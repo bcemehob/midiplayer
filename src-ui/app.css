@@ -1,6 +1,7 @@
 :focus {
   outline: none;
 }
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -80,6 +81,19 @@ button:focus-visible {
   margin: 0.5em;
   padding: 1em;
   border: 1px solid #ccc;
+}
+
+.modal {
+position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #dfdfc5;
+  padding: 1em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  border: 1px solid #cbc2b3;
+  border-radius: 7%;
+  z-index: 1000;
 }
 
 @media (prefers-color-scheme: light) {

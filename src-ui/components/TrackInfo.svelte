@@ -11,6 +11,8 @@
   let rawParties
   let partyViews
   let lastUpdate
+  let currentPayload
+  let isPartyModalShown = false
 
   $: if (track || lastUpdate) {
     loadTrack(index)
@@ -25,17 +27,26 @@
     }
   }
 
-  async function addInfo() {
+  function initSaveParty() {
     const partiesCount = rawParties?.parties?.length || 0
-    const payload = {
+    currentPayload = {
       start: $latestStartTick,
       name: track.name + partiesCount,
       duration: 3600
     }
+    isPartyModalShown = true
+  }
+
+  function submit(){
+    isPartyModalShown = false
+    savePartyElement()
+  }
+
+  async function savePartyElement() {
     await fetch(`/api/track/${index}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(currentPayload),
     })
     lastUpdate = Date.now()
   }
@@ -54,12 +65,21 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="track-info" on:click={addInfo}>
+<div class="track-info" on:click={initSaveParty}>
   Track {index} info
   {#each partyViews as party}
     <Party {party} />
   {/each}
 </div>
+{#if isPartyModalShown}
+<div id="partyModal" class="modal">
+  <h5>Add party to timeline</h5>
+  <div>start: {currentPayload.start}</div>
+  <div>name: {currentPayload.name}</div>
+  <div>duration: {currentPayload.duration}</div>
+  <button on:click={submit}>ok</button>
+</div>
+{/if}
 
 <style>
   .track-info {
