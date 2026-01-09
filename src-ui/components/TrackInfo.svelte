@@ -10,8 +10,9 @@
 
   let rawParties
   let partyViews
+  let lastUpdate
 
-  $: if (track) {
+  $: if (track || lastUpdate) {
     loadTrack(index)
   }
 
@@ -36,6 +37,7 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
+    lastUpdate = Date.now()
   }
 
   function getParty(id) {
