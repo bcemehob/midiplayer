@@ -41,6 +41,10 @@ async function createFileIfNotExists(path, content) {
   }
 }
 
+async function save(path, content) {
+  await fsp.writeFile(path, content, "utf8")
+}
+
 function downloadAudio(_, res) {
   downloadFile(paths.fullAudioPath(), res)
 }
@@ -116,6 +120,7 @@ module.exports = {
   storeArchive,
   getFile,
   createFileIfNotExists,
+  save,
   createTrackInfoFiles,
   latestBundle,
   projects,

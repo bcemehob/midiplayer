@@ -20,6 +20,9 @@ const paths = {
   fullAudioPath() {
     return path.join(this.currentFolderPath(), String(this.audio))
   },
+  fullTrackInfoPath(index) {
+    return this.fullPath(`track_${index}.json`)
+  },
   fullPath(fileName) {
     return path.join(this.currentFolderPath(), String(fileName))
   },
