@@ -4,6 +4,7 @@
   import { offset } from "../helpers/timeline"
   import { totalTicks, latestStartTick } from "../store"
   import Party from "./Party.svelte"
+    import Modal from "./Modal.svelte"
 
   export let index
   export let track
@@ -12,7 +13,7 @@
   let partyViews
   let lastUpdate
   let currentPayload
-  let isPartyModalShown = false
+  let isModalOpen = false
 
   $: if (track || lastUpdate) {
     loadTrack(index)
@@ -34,11 +35,15 @@
       name: track.name + partiesCount,
       duration: 3600
     }
-    isPartyModalShown = true
+    isModalOpen = true
+  }
+
+  function closeModal() {
+    isModalOpen = false
   }
 
   function submit(){
-    isPartyModalShown = false
+    isModalOpen = false
     savePartyElement()
   }
 
@@ -71,15 +76,11 @@
     <Party {party} />
   {/each}
 </div>
-{#if isPartyModalShown}
-<div id="partyModal" class="modal">
-  <h5>Add party to timeline</h5>
+<Modal isOpen={isModalOpen} close={closeModal} title="Add party to timeline" submit>
   <div>start: {currentPayload.start}</div>
   <div>name: {currentPayload.name}</div>
   <div>duration: {currentPayload.duration}</div>
-  <button on:click={submit}>ok</button>
-</div>
-{/if}
+</Modal>
 
 <style>
   .track-info {
