@@ -11,7 +11,7 @@ const {
 } = require("./helpers/file/file")
 const { unzipArchive } = require("./helpers/file/unzip")
 const paths = require("./paths")
-const {track, addPartyElement} = require("./helpers/track")
+const {track, addPartyElement} = require("./helpers/track/track")
 
 
 const { registerUiClient, emitEvent } = require("./helpers/sse")
