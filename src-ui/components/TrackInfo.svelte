@@ -43,6 +43,7 @@
   }
 
   function submit(){
+    console.log("submitting", currentPayload)
     isModalOpen = false
     savePartyElement()
   }
@@ -76,7 +77,7 @@
     <Party {party} />
   {/each}
 </div>
-<Modal isOpen={isModalOpen} close={closeModal} title="Add party to timeline" submit>
+<Modal isOpen={isModalOpen} close={closeModal} title="Add party to timeline" submit={submit}>
   <div>start: {currentPayload.start}</div>
   <div>name: {currentPayload.name}</div>
   <div>duration: {currentPayload.duration}</div>
