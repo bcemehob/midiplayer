@@ -1,6 +1,7 @@
 <script>
   // @ts-nocheck
   import { onMount, onDestroy } from "svelte"
+  import { modalOpen } from "../store/index.js"
   import { goToTick } from "../helpers/playback"
   import {
     isPlaybackStopped,
@@ -24,6 +25,7 @@
   }
 
   function setHotKeys(event) {
+    if($modalOpen) return
     if ($isPlaybackStopped && event.shiftKey && event.code === "ArrowLeft") {
       event.preventDefault()
       goToTick(0)

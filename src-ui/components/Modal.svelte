@@ -1,9 +1,13 @@
 <script>
   // @ts-nocheck
+  import { modalOpen } from "./../store/index.js"
   export let title
   export let submit
   export let isOpen
   export let close
+  $: if (isOpen) {
+    modalOpen.set(true)
+  }
 </script>
 
 {#if isOpen}
@@ -11,7 +15,7 @@
     <div class="header">
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <!-- svelte-ignore a11y_no_static_element_interactions -->
-      <div class="close" on:click={close}>
+      <div class="close" on:click={() => {modalOpen.set(false); close()}}>
         <svg viewBox="0 0 24 24" stroke="red" stroke-width="2">
           <line x1="5" y1="5" x2="19" y2="19" />
           <line x1="19" y1="5" x2="5" y2="19" />
@@ -24,7 +28,7 @@
     </div>
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <button on:click={submit}>ok</button>
+    <button on:click={() => {modalOpen.set(false); submit()}}>ok</button>
   </div>
 {/if}
 

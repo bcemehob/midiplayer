@@ -6,6 +6,7 @@ export const midiEvent = writable({})
 export const latestStartTick = writable(0)
 export const midiEvents = writable([])
 export const totalTicks = writable(0)
+export const modalOpen = writable(false)
 window.addEventListener("sse-update", (e) => {
     midiEvent.set(e.detail)
     const trackId = e.detail.track
