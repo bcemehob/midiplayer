@@ -24,7 +24,7 @@ async function addPartyElement(req, res) {
 
 function findOrCreateParty(trackInfo, requestBody) {
     const { partyId, name, duration } = requestBody
-    if (!!partyId) {
+    if (partyId !== undefined) {
         return trackInfo.getParty(partyId)
     }
     const party = new Party(trackInfo.parties.length, `Party ${trackInfo.parties.length}`, name, duration)
