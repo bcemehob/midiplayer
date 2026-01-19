@@ -29,7 +29,6 @@
   })
 
   function selectFile() {
-    console.log(fileInput)
     fileInput.click()
   }
 

@@ -44,7 +44,6 @@
   }
 
   function submit() {
-    console.log("submitting", currentPayload)
     isModalOpen = false
     savePartyElement()
   }

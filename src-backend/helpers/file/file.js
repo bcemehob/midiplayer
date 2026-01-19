@@ -75,7 +75,6 @@ function bundle(folder) {
   const files = fs.readdirSync(paths.currentFolderPath(), { withFileTypes: true })
     .filter(entry => entry.isFile())
     .map(entry => entry.name)
-  console.log("Files, folder", files, folder)
   const midiFile = files.find(f => f.toLowerCase().endsWith('.mid') || f.toLowerCase().endsWith('.midi'))
   paths.midi = path.basename(midiFile)
   const audioFile = files.find(f => ['.mp3', '.wav', '.ogg'].some(ext => f.toLowerCase().endsWith(ext)))

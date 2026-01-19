@@ -14,8 +14,6 @@
   }
 
   const putEventToChannel = (midiEvent) => {
-    console.log("midiEvent", midiEvent)
-    console.log("midiEvents", $midiEvents)
     const track = midiEvent.track
     const previousEvents = tracks[track]
     tracks[track] = previousEvents
