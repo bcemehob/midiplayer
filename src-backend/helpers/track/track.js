@@ -23,11 +23,11 @@ async function addPartyElement(req, res) {
 }
 
 function findOrCreateParty(trackInfo, requestBody) {
-    const { partyId, name, duration } = requestBody
+    const { partyId, name, description, duration } = requestBody
     if (partyId !== undefined) {
         return trackInfo.getParty(partyId)
     }
-    const party = new Party(trackInfo.parties.length, `Party ${trackInfo.parties.length}`, name, duration)
+    const party = new Party(trackInfo.parties.length, name, description, name, duration)
     trackInfo.parties.push(party)
     return party
 }

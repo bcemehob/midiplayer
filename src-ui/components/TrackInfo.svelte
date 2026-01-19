@@ -83,23 +83,36 @@
   title="Add party to timeline"
   {submit}
 >
-  <span>Party: </span>
-  <select bind:value={currentPayload.partyId}>
-    <option value={undefined}>new party</option>
-    {#each rawParties.parties as party}
-      <option value={party.id}>{party.id} {party.name}</option>
-    {/each}
-  </select>
-  {#if !currentPayload.partyId && currentPayload.partyId !== 0}
-    <label>
-      Name:
-      <input type="text" bind:value={currentPayload.name} />
-    </label>
-  {/if}
+  <div class="two-columns">
+    <div class="left">
+      <label>Party:
+      <select bind:value={currentPayload.partyId}>
+        <option value={undefined}>new party</option>
+        {#each rawParties.parties as party}
+          <option value={party.id}>{party.id} {party.name}</option>
+        {/each}
+      </select>
+      </label>
 
-  <div>start: {currentPayload.start}</div>
-  <div>name: {currentPayload.name}</div>
-  <div>duration: {currentPayload.duration}</div>
+      <div>start: {currentPayload.start}</div>
+      <div>name: {currentPayload.name}</div>
+      <div>duration: {currentPayload.duration}</div>
+    </div>
+
+    <div class="right">
+      {#if currentPayload.partyId === undefined}
+        <label>
+          Name:
+          <input type="text" bind:value={currentPayload.name} />
+        </label>
+
+        <label>
+          Description:
+          <input type="text" bind:value={currentPayload.description} />
+        </label>
+      {/if}
+    </div>
+  </div>
 </Modal>
 
 <style>
@@ -109,5 +122,23 @@
     padding: 3px;
     line-height: 5pt;
     cursor: pointer;
+  }
+  .two-columns {
+    display: flex;
+    gap: 2rem; /* space between columns */
+  }
+
+  .left,
+  .right {
+    flex: 1; /* equal width columns */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* spacing between items */
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    font-size: 9pt;
+    font-weight: bold;
   }
 </style>
