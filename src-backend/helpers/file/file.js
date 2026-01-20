@@ -94,7 +94,8 @@ function latestBundle(_, res) {
     return
   }
   try {
-    return bundle(String(Math.max(...storedProjects())))
+    bundle(String(Math.max(...projects)))
+    return res.json(paths.successResponse())
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Internal server error' })
