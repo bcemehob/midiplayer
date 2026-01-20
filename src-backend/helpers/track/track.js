@@ -27,7 +27,7 @@ function findOrCreateParty(trackInfo, requestBody) {
     if (partyId !== undefined) {
         return trackInfo.getParty(partyId)
     }
-    const party = new Party(trackInfo.parties.length, name, description, name, duration)
+    const party = new Party(trackInfo.parties.length, name, description, duration)
     trackInfo.parties.push(party)
     return party
 }
