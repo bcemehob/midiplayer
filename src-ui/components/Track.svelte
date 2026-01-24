@@ -39,7 +39,9 @@
   .track-label {
     font-weight: bold;
     color: #642;
-    font-size: 8pt;
+    font-size: 10pt;
+    padding: 0.7em 0;
+    margin-bottom: 0.5em;
   }
   .note {
     position: absolute;

@@ -5,7 +5,7 @@
   import { totalTicks, latestStartTick } from "../store"
   import Party from "./Party.svelte"
   import Modal from "./Modal.svelte"
-    import AddPartyModalContent from "./AddPartyModalContent.svelte"
+  import AddPartyModalContent from "./AddPartyModalContent.svelte"
 
   export let index
   export let track
@@ -17,7 +17,7 @@
   let isModalOpen = false
   let selectedParty
 
-  $: if (track || lastUpdate) loadTrack()  
+  $: if (track || lastUpdate) loadTrack()
 
   async function loadTrack() {
     const res = await fetch(`/api/track/${index}`)
@@ -70,22 +70,34 @@
   }
 </script>
 
+{#if rawParties}
+  <div class="parties">
+    {#each rawParties.parties as party}
+      <div class="party">{party.id}</div>
+    {/each}
+  </div>
+{/if}
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="track-info" on:click={initSaveParty}>
   Track {index} info
   {#each partyViews as party}
-    <Party {party} on:element-deleted={loadTrack}/>
+    <Party {party} on:element-deleted={loadTrack} />
   {/each}
 </div>
-<Modal isOpen={isModalOpen} close={closeModal} title="Add party to timeline" {submit}>
- <AddPartyModalContent {currentPayload} {rawParties}/>
+<Modal
+  isOpen={isModalOpen}
+  close={closeModal}
+  title="Add party to timeline"
+  {submit}
+>
+  <AddPartyModalContent {currentPayload} {rawParties} />
 </Modal>
 
 <style>
   .track-info {
     position: relative;
-    font-size: 7pt;
+    font-size: 9pt;
     border: 1px solid lavender;
     padding: 3px;
     line-height: 5pt;
@@ -108,5 +120,18 @@
     flex-direction: column;
     font-size: 9pt;
     font-weight: bold;
+  }
+  .parties {
+    display: flex;
+    margin: 0.5em;
+    font-size: 9pt;
+    color: #ccd;
+  }
+  .parties .party {
+    margin-right: 0.2em;
+    background-color: #444;
+    padding: 0 0.6em;
+    border-radius: 0.4em;
+    cursor: pointer;
   }
 </style>
