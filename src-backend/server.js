@@ -11,7 +11,11 @@ const {
 } = require("./helpers/file/file")
 const { unzipArchive } = require("./helpers/file/unzip")
 const paths = require("./paths")
-const {track, addPartyElement} = require("./helpers/track/track")
+const {
+  track, 
+  addPartyElement,
+  deletePartyElement
+} = require("./helpers/track/track")
 
 
 const { registerUiClient, emitEvent } = require("./helpers/sse")
@@ -41,6 +45,7 @@ function createServer() {
   app.get("/api/jump", jump)
   app.get("/api/track/:index", track)
   app.patch("/api/track/:index", addPartyElement)
+  app.delete("/api/track/:index/element/:elementId", deletePartyElement)
   return app
 }
 

@@ -32,4 +32,21 @@ function findOrCreateParty(trackInfo, requestBody) {
     return party
 }
 
-module.exports = { track, addPartyElement }
+async function deletePartyElement(req, res) {
+    const { index, elementId } = req.params
+    if (isNaN(elementId)) {
+        return res.status(400).json({ error: "Invalid element ID" })
+    }
+    const filePath = paths.fullTrackInfoPath(index)
+    const fileContent = await getFile(filePath)
+    const trackInfo = Object.assign(new TrackInfo(), JSON.parse(fileContent.toString()))
+    const elementIndex = trackInfo.timeline.findIndex(el => el.id === elementId * 1)
+    if (elementIndex === -1) {
+        return res.status(404).json({ error: "Timeline element not found" })
+    }
+    trackInfo.timeline.splice(elementIndex, 1)
+    await save(filePath, JSON.stringify(trackInfo))
+    return res.json({ result: "OK" })
+}
+
+module.exports = { track, addPartyElement, deletePartyElement }

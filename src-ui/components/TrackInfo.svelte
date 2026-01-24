@@ -17,11 +17,9 @@
   let isModalOpen = false
   let selectedParty
 
-  $: if (track || lastUpdate) {
-    loadTrack(index)
-  }
+  $: if (track || lastUpdate) loadTrack()  
 
-  async function loadTrack(index) {
+  async function loadTrack() {
     const res = await fetch(`/api/track/${index}`)
     rawParties = await res.json()
 
@@ -66,6 +64,8 @@
     return {
       ...getParty(timelineElement.partyId),
       start: timelineElement.start,
+      timelineElementId: timelineElement.id,
+      trackIndex: index,
     }
   }
 </script>
@@ -75,7 +75,7 @@
 <div class="track-info" on:click={initSaveParty}>
   Track {index} info
   {#each partyViews as party}
-    <Party {party} />
+    <Party {party} on:element-deleted={loadTrack}/>
   {/each}
 </div>
 <Modal isOpen={isModalOpen} close={closeModal} title="Add party to timeline" {submit}>

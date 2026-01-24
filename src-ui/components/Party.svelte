@@ -1,5 +1,6 @@
 <script>
   // @ts-nocheck
+  import { createEventDispatcher } from "svelte"
   import { offset, length } from "../helpers/timeline"
   import { totalTicks } from "../store"
   import RecycleBin from "./icons/RecycleBin.svelte"
@@ -7,6 +8,7 @@
   export let party
 
   let isModalOpen = false
+  const dispatch = createEventDispatcher()
 
   function getStyle() {
     return `${offset(party.start, $totalTicks)};${length(party.duration, $totalTicks)}`
@@ -25,8 +27,13 @@
     isModalOpen = false
   }
 
-  function deleteElement() {
-    console.log("delete", party)
+  async function deleteElement() {
+    if (!confirm("Are you sure you want to delete this item?")) return
+    await fetch(
+      `/api/track/${party.trackIndex}/element/${party.timelineElementId}`,
+      { method: "DELETE" },
+    )
+    dispatch("element-deleted")
   }
 </script>
 
