@@ -2,6 +2,7 @@
   // @ts-nocheck
   import { onMount } from "svelte"
   import { offset } from "../helpers/timeline"
+  import properties from "../properties"
   import { totalTicks, latestStartTick } from "../store"
   import Party from "./Party.svelte"
   import Modal from "./Modal.svelte"
@@ -68,12 +69,16 @@
       trackIndex: index,
     }
   }
+  function partyStyle(party) {
+    return `background-color: ${properties.partyColorsMap[party.id % properties.partyColorsMap.length][0]};
+            color: ${properties.partyColorsMap[party.id % properties.partyColorsMap.length][1]}`
+  }
 </script>
 
 {#if rawParties}
   <div class="parties">
     {#each rawParties.parties as party}
-      <div class="party">{party.id}</div>
+      <div class="party" style={partyStyle(party)}>{party.id}</div>
     {/each}
   </div>
 {/if}
