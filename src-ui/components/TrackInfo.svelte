@@ -84,6 +84,7 @@
 
 <style>
   .track-info {
+    position: relative;
     font-size: 7pt;
     border: 1px solid lavender;
     padding: 3px;
