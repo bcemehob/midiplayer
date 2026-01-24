@@ -77,8 +77,10 @@
     visibility: hidden;
   }
 
+  .party:hover {
+    border-top-right-radius: 0;
+  }
   .party:hover .party-menu {
     visibility: visible;
-    border-top-right-radius: 0;
   }
 </style>
