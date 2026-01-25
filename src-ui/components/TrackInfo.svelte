@@ -70,8 +70,8 @@
     }
   }
   function partyStyle(party) {
-    return `background-color: ${properties.partyColorsMap[party.id % properties.partyColorsMap.length][0]};
-            color: ${properties.partyColorsMap[party.id % properties.partyColorsMap.length][1]}`
+    return `background-color: ${properties.partyColors[party.id % properties.partyColors.length][0]};
+            color: ${properties.partyColors[party.id % properties.partyColors.length][1]}`
   }
 </script>
 

@@ -1,5 +1,5 @@
 export default {    
-    partyColorsMap: [
+    partyColors: [
         ['#beacac', '#000'],
         ['#832d2d', '#fff'],
         ['#55ff55', '#000'],
