@@ -66,6 +66,7 @@
     border-bottom-right-radius: 0.4em;
     border-bottom-left-radius: 0.4em;
     height: 2em;
+    line-height: 1.1em;
     padding: 0.2em 0.4em;
     color: #fff;
     font-weight: bold;

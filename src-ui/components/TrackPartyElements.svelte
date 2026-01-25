@@ -39,7 +39,7 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(currentPayload),
     })
-    dispatch("element-saved")
+    dispatch("element-changed")
   }
 </script>
 
@@ -50,7 +50,7 @@
   {#each partyElements as party}
     <PartyElement
       {party}
-      on:element-deleted={() => dispatch("element-deleted")}
+      on:element-deleted={() => dispatch("element-changed")}
     />
   {/each}
 </div>
