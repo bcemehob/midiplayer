@@ -4,7 +4,7 @@
   import { offset } from "../helpers/timeline"
   import properties from "../properties"
   import { totalTicks, latestStartTick } from "../store"
-  import Party from "./Party.svelte"
+  import PartyElement from "./PartyElement.svelte"
   import Modal from "./Modal.svelte"
   import AddPartyModalContent from "./AddPartyModalContent.svelte"
 
@@ -12,7 +12,7 @@
   export let track
 
   let rawParties
-  let partyViews
+  let partyElements
   let lastUpdate
   let currentPayload
   let isModalOpen = false
@@ -25,7 +25,7 @@
     rawParties = await res.json()
 
     if (rawParties.timeline) {
-      partyViews = rawParties.timeline.map(mergePartyView)
+      partyElements = rawParties.timeline.map(partyElementView)
     }
   }
 
@@ -61,7 +61,7 @@
     return rawParties.parties.find((p) => p.id === id)
   }
 
-  function mergePartyView(timelineElement) {
+  function partyElementView(timelineElement) {
     return {
       ...getParty(timelineElement.partyId),
       start: timelineElement.start,
@@ -86,8 +86,8 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="track-info" on:click={initSaveParty}>
   Track {index} info
-  {#each partyViews as party}
-    <Party {party} on:element-deleted={loadTrack} />
+  {#each partyElements as party}
+    <PartyElement {party} on:element-deleted={loadTrack} />
   {/each}
 </div>
 <Modal
