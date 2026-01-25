@@ -6,7 +6,7 @@
   import { totalTicks, latestStartTick } from "../store"
   import PartyElement from "./PartyElement.svelte"
   import Modal from "./Modal.svelte"
-  import AddPartyModalContent from "./AddPartyModalContent.svelte"
+  import AddPartyElementModalContent from "./AddPartyElementModalContent.svelte"
   import TrackParties from "./TrackParties.svelte"
 
   export let index
@@ -94,7 +94,7 @@
   title="Add party to timeline"
   {submit}
 >
-  <AddPartyModalContent {currentPayload} {rawParties} />
+  <AddPartyElementModalContent {currentPayload} {rawParties} />
 </Modal>
 
 <style>
