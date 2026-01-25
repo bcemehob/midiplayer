@@ -7,6 +7,7 @@
   import PartyElement from "./PartyElement.svelte"
   import Modal from "./Modal.svelte"
   import AddPartyModalContent from "./AddPartyModalContent.svelte"
+  import TrackParties from "./TrackParties.svelte"
 
   export let index
   export let track
@@ -76,12 +77,9 @@
 </script>
 
 {#if rawParties}
-  <div class="parties">
-    {#each rawParties.parties as party}
-      <div class="party" style={partyStyle(party)}>{party.id}</div>
-    {/each}
-  </div>
+  <TrackParties parties={rawParties.parties} />
 {/if}
+
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="track-info" on:click={initSaveParty}>
@@ -125,18 +123,5 @@
     flex-direction: column;
     font-size: 9pt;
     font-weight: bold;
-  }
-  .parties {
-    display: flex;
-    margin: 0.5em;
-    font-size: 9pt;
-    color: #ccd;
-  }
-  .parties .party {
-    margin-right: 0.2em;
-    background-color: #444;
-    padding: 0 0.6em;
-    border-radius: 0.4em;
-    cursor: pointer;
   }
 </style>
