@@ -1,5 +1,6 @@
 <script>
   // @ts-nocheck
+  import { onMount } from "svelte"
   import TrackParties from "./TrackParties.svelte"
   import TrackPartyElements from "./TrackPartyElements.svelte"
 
@@ -10,15 +11,15 @@
   let partyElements
   let isModalOpen = false
 
-  $: if (track) loadTrack()
+  onMount(() => {
+    loadTrack()
+  })
+
+  $: partyElements = rawParties?.timeline?.map(partyElementView) || []
 
   async function loadTrack() {
     const res = await fetch(`/api/track/${index}`)
     rawParties = await res.json()
-
-    if (rawParties.timeline) {
-      partyElements = rawParties.timeline.map(partyElementView)
-    }
   }
 
   function getParty(id) {

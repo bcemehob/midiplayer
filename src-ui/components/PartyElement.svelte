@@ -9,13 +9,13 @@
 
   let isModalOpen = false
   const dispatch = createEventDispatcher()
+  $: party
 
   function getStyle() {
     return `${offset(party.start, $totalTicks)};${length(party.duration, $totalTicks)}`
   }
 
   function editParty() {
-    console.log("Edit party", party.id)
     isModalOpen = true
   }
 
@@ -40,8 +40,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div class="party" style={getStyle()} on:click|stopPropagation={editParty}>
-  id: {party.id}
-  {party.name}
+  name: {party.name}
   <div class="party-menu" on:click|stopPropagation={() => deleteElement(party)}>
     <RecycleBin width="16" height="16" />
   </div>
@@ -68,7 +67,7 @@
     height: 2em;
     line-height: 1.1em;
     padding: 0.2em 0.4em;
-    color: #fff;
+    color: #dfdfc5;
     font-weight: bold;
     top: -0.45em;
   }
