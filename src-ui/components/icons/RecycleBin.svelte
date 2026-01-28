@@ -1,9 +1,31 @@
+<script>
+  // @ts-nocheck
+  export let color = "red"
+  let hovered = false
+
+  $: dynamicStyle = hovered
+    ? `stroke: ${hoverColor()}`
+    : `stroke: ${color}`
+
+  function hoverColor() {
+    const firstChar = color.charAt(1)
+    const isDark = !isNaN(firstChar) && parseInt(firstChar, 16) < 8
+    console.log("First char of color:", color, firstChar, isDark)  
+    return isDark ? "#000" : "#fff"
+  }
+</script>
+
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <svg
+  on:mouseenter={() => hovered = true}
+  on:mouseleave={() => hovered = false}
+  style={dynamicStyle}
   viewBox="0 0 24 24"
   fill="none"
   stroke-width="2"
   stroke-linecap="round"
   stroke-linejoin="round"
+  stroke={color}
 >
   <!-- Bin Lid -->
   <path d="M3 6h18" />
@@ -18,11 +40,7 @@
 
 <style>
   svg {
-    stroke: #ccb;
     width: 1.5em;
     height: 1.5em;
-  }
-  svg:hover {
-    stroke: #fff;
   }
 </style>

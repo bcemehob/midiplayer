@@ -42,7 +42,7 @@
 <div class="party" style={getStyle()} on:click|stopPropagation={editParty}>
   name: {party.name}
   <div class="party-menu" on:click|stopPropagation={() => deleteElement(party)}>
-    <RecycleBin width="16" height="16" />
+    <RecycleBin color="#ccb" width="16" height="16" />
   </div>
 </div>
 
