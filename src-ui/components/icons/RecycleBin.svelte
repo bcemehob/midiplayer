@@ -10,7 +10,6 @@
   function hoverColor() {
     const firstChar = color.charAt(1)
     const isDark = !isNaN(firstChar) && parseInt(firstChar, 16) < 8
-    console.log("First char of color:", color, firstChar, isDark)  
     return isDark ? "#000" : "#fff"
   }
 </script>

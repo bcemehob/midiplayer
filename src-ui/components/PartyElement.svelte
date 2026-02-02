@@ -5,6 +5,7 @@
   import { totalTicks } from "../store"
   import RecycleBin from "./icons/RecycleBin.svelte"
   import Modal from "./Modal.svelte"
+  import { shorten } from "../util/text"
   export let party
 
   let isModalOpen = false
@@ -40,7 +41,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div class="party" style={getStyle()} on:click|stopPropagation={editParty}>
-  name: {party.name}
+  name: {shorten(party.id, 4)}
   <div class="party-menu" on:click|stopPropagation={() => deleteElement(party)}>
     <RecycleBin color="#ccb" width="16" height="16" />
   </div>

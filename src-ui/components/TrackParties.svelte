@@ -1,14 +1,18 @@
 <script>
   // @ts-nocheck
   import Party from "./Party.svelte"
+  import { createEventDispatcher } from "svelte"
+  const dispatch = createEventDispatcher()
 
   export let parties
+  export let index
 </script>
 
 {#if parties}
   <div class="parties">
     {#each parties as party}
-      <Party {party} />
+      <Party {party} {index}       
+      on:party-deleted={() => dispatch("party-changed")}/>
     {/each}
   </div>
 {/if}

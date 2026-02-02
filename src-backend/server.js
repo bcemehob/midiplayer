@@ -14,7 +14,8 @@ const paths = require("./paths")
 const {
   track, 
   addPartyElement,
-  deletePartyElement
+  deletePartyElement,
+  deleteParty
 } = require("./helpers/track/track")
 
 
@@ -46,6 +47,7 @@ function createServer() {
   app.get("/api/track/:index", track)
   app.patch("/api/track/:index", addPartyElement)
   app.delete("/api/track/:index/element/:elementId", deletePartyElement)
+  app.delete("/api/track/:index/party/:partyId", deleteParty)
   return app
 }
 

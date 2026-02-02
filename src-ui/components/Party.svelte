@@ -2,8 +2,12 @@
   // @ts-nocheck
   import RecycleBin from "./icons/RecycleBin.svelte"
   import properties from "../properties"
+  import { createEventDispatcher } from "svelte"
+  import { shorten } from "../util/text"
+  const dispatch = createEventDispatcher()
 
   export let party
+  export let index
 
   const getBgColor = partyId => {
     return properties.partyColors[partyId % properties.partyColors.length][0]
@@ -17,11 +21,11 @@
     return `background-color: ${getBgColor(party.id)};color: ${getColor(party.id)}`
   }
 
-  function shorten(input, maxLength) {
-    const text = String(input)
-    const ret = text.length > maxLength ? text.substring(0, maxLength) + "..." : text
-    return ret
-  }
+  async function deleteParty(party) {
+    if (!confirm("Are you sure you want to delete this party?")) return
+    await fetch(`/api/track/${index}/party/${party.id}`, { method: "DELETE" })
+    dispatch("party-deleted")
+  } 
 </script>
 <div class="party" style={partyStyle(party)}>
   <div class="party-menu">
@@ -57,5 +61,5 @@
   .party:hover .party-menu {
     visibility: visible;
   }
-  
+
 </style>

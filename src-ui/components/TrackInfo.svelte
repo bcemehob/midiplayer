@@ -37,7 +37,11 @@
 </script>
 
 {#if rawParties}
-  <TrackParties parties={rawParties.parties} />
+  <TrackParties
+    parties={rawParties.parties}
+    {index}
+    on:party-changed={loadTrack}
+  />
   <TrackPartyElements
     on:element-changed={loadTrack}
     {partyElements}

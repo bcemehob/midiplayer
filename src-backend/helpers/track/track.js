@@ -40,13 +40,53 @@ async function deletePartyElement(req, res) {
     const filePath = paths.fullTrackInfoPath(index)
     const fileContent = await getFile(filePath)
     const trackInfo = Object.assign(new TrackInfo(), JSON.parse(fileContent.toString()))
-    const elementIndex = trackInfo.timeline.findIndex(el => el.id === elementId * 1)
-    if (elementIndex === -1) {
+    try {
+        deleteElementById(trackInfo, elementId)
+        saveFile(filePath, trackInfo, res)
+    } catch (err) {
         return res.status(404).json({ error: "Timeline element not found" })
     }
-    trackInfo.timeline.splice(elementIndex, 1)
-    await save(filePath, JSON.stringify(trackInfo))
+}
+
+async function saveFile(filePath, object, res) {
+    await save(filePath, JSON.stringify(object))
     return res.json({ result: "OK" })
 }
 
-module.exports = { track, addPartyElement, deletePartyElement }
+function deleteElementById(trackInfo, elementId) {
+    const elementIndex = trackInfo.timeline.findIndex(el => el.id === elementId * 1)
+    if (elementIndex === -1) throw new Error("Timeline element not found")
+    trackInfo.timeline.splice(elementIndex, 1)
+}
+
+function findElementsByPartyId(trackInfo, partyId) {
+    return trackInfo.timeline.filter(el => el.partyId === partyId * 1)
+}
+
+function deletePartyById(trackInfo, partyId) {
+    const partyIndex = trackInfo.parties.findIndex(p => p.id === partyId * 1)
+    if (partyIndex === -1) throw new Error("Party not found")
+    trackInfo.parties.splice(partyIndex, 1)
+}
+
+async function deleteParty(req, res) {
+    const { index, partyId } = req.params
+    const filePath = paths.fullTrackInfoPath(index)
+    const fileContent = await getFile(filePath)
+    const trackInfo = Object.assign(new TrackInfo(), JSON.parse(fileContent.toString()))
+    try {
+        deletePartyById(trackInfo, partyId)
+    } catch (err) {
+        return res.status(404).json({ error: err.data })
+    }
+    const elements = findElementsByPartyId(trackInfo, partyId)
+    console.log("elements to delete:", elements)
+    elements.forEach(el => {
+        try {
+            deleteElementById(trackInfo, el.id)
+        } catch (err) { }
+    })
+    saveFile(filePath, trackInfo, res)
+}
+
+module.exports = { track, addPartyElement, deletePartyElement, deleteParty }
