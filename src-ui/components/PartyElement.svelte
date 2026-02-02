@@ -3,17 +3,21 @@
   import { createEventDispatcher } from "svelte"
   import { offset, length } from "../helpers/timeline"
   import { totalTicks } from "../store"
+  import properties from "../properties"
   import RecycleBin from "./icons/RecycleBin.svelte"
   import Modal from "./Modal.svelte"
   import { shorten } from "../util/text"
   export let party
+  let colorId = party.id % properties.partyColors.length
+  let bgColor = properties.partyColors[colorId][0]
+  let textColor = properties.partyColors[colorId][1]
 
   let isModalOpen = false
   const dispatch = createEventDispatcher()
   $: party
 
   function getStyle() {
-    return `${offset(party.start, $totalTicks)};${length(party.duration, $totalTicks)}`
+    return `${offset(party.start, $totalTicks)};${length(party.duration, $totalTicks)};color: ${textColor};background-color:${bgColor}`
   }
 
   function editParty() {
@@ -42,8 +46,8 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div class="party" style={getStyle()} on:click|stopPropagation={editParty}>
   name: {shorten(party.id, 4)}
-  <div class="party-menu" on:click|stopPropagation={() => deleteElement(party)}>
-    <RecycleBin color="#ccb" width="16" height="16" />
+  <div class="party-menu" style={`background-color: ${bgColor}`} on:click|stopPropagation={() => deleteElement(party)}>
+    <RecycleBin color={textColor} width="16" height="16" />
   </div>
 </div>
 
@@ -60,7 +64,6 @@
   .party {
     position: absolute;
     display: inline-block;
-    background-color: #7b7253;
     border-top-left-radius: 0.4em;
     border-top-right-radius: 0.4em;
     border-bottom-right-radius: 0.4em;
@@ -68,7 +71,6 @@
     height: 2em;
     line-height: 1.1em;
     padding: 0.2em 0.4em;
-    color: #dfdfc5;
     font-weight: bold;
     top: -0.45em;
   }
@@ -76,7 +78,6 @@
     position: absolute;
     top: -1.6em;
     right: 0;
-    background-color: #7b7253;
     border-top-left-radius: 15%;
     border-top-right-radius: 15%;
     padding: 0.1em;
