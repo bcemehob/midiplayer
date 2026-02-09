@@ -8,12 +8,16 @@ async function track(req, res) {
     res.json(JSON.parse(fileContent))
 }
 
-async function addPartyElement(req, res) {
+async function addElementForParty(req, res) {
+    const partyId = req.body.partyId
+    if (!partyId) {
+        return res.status(400).json({ error: "Missing party ID" })
+    }
     const filePath = paths.fullTrackInfoPath(req.params.index)
     const fileContent = await getFile(filePath)
     const trackInfo = Object.assign(new TrackInfo(), JSON.parse(fileContent.toString()))
-    const party = findOrCreateParty(trackInfo, req.body)
-    const timelineElement = new TimelineElement(Date.now(), party.id, req.body.start)
+    const party = trackInfo.getParty(partyId)
+    const timelineElement = new TimelineElement(Date.now(), partyId, req.body.start)
     if (!trackInfo.canAddToTimeline(party, timelineElement)) {
         return res.status(400).json({ error: "Timeline element overlaps with existing elements" })
     }
@@ -21,13 +25,14 @@ async function addPartyElement(req, res) {
     await save(filePath, JSON.stringify(trackInfo))
     res.json({ result: "OK" })
 }
+
 async function addPartyWithElement(req, res) {
-    const { name, description, duration } = req.body
+    const { name, description, duration, start } = req.body
     const filePath = paths.fullTrackInfoPath(req.params.index)
     const fileContent = await getFile(filePath)
     const trackInfo = Object.assign(new TrackInfo(), JSON.parse(fileContent.toString()))
     const party = createParty(trackInfo, name, description, duration)
-    const timelineElement = new TimelineElement(Date.now(), party.id, req.body.start)
+    const timelineElement = new TimelineElement(Date.now(), party.id, start)
     if (!trackInfo.canAddToTimeline(party, timelineElement)) {
         return res.status(400).json({ error: "Timeline element overlaps with existing elements" })
     }
@@ -107,4 +112,4 @@ async function deleteParty(req, res) {
     saveFile(filePath, trackInfo, res)
 }
 
-module.exports = { track, addPartyElement, deletePartyElement, deleteParty }
+module.exports = { track, addPartyWithElement, addElementForParty, deletePartyElement, deleteParty }

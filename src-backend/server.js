@@ -13,9 +13,10 @@ const { unzipArchive } = require("./helpers/file/unzip")
 const paths = require("./paths")
 const {
   track, 
-  addPartyElement,
+  addElementForParty,
   deletePartyElement,
-  deleteParty
+  deleteParty,
+  addPartyWithElement
 } = require("./helpers/track/track")
 
 
@@ -45,7 +46,8 @@ function createServer() {
   app.get("/api/pause", pause)
   app.get("/api/jump", jump)
   app.get("/api/track/:index", track)
-  app.patch("/api/track/:index", addPartyElement)
+  app.patch("/api/track/:index", addElementForParty)
+  app.post("/api/track/:index", addPartyWithElement)
   app.delete("/api/track/:index/element/:elementId", deletePartyElement)
   app.delete("/api/track/:index/party/:partyId", deleteParty)
   return app

@@ -1,19 +1,10 @@
 <script>
   export let currentPayload
-  export let parties
 </script>
 
 <div class="two-columns">
   <div class="left">
-    <label
-      >Party:
-      <select bind:value={currentPayload.partyId}>
-        <option value={undefined}>new party</option>
-        {#each parties as party}
-          <option value={party.id}>{party.id} {party.name}</option>
-        {/each}
-      </select>
-    </label>
+    <h5>Add Party</h5>
 
     <div>start: {currentPayload.start}</div>
     <div>name: {currentPayload.name}</div>

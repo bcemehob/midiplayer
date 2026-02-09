@@ -40,6 +40,7 @@
   <TrackParties
     parties={rawParties.parties}
     {index}
+    {track}
     on:party-changed={loadTrack}
   />
   <TrackPartyElements
