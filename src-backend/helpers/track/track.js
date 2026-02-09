@@ -9,7 +9,7 @@ async function track(req, res) {
 }
 
 async function addElementForParty(req, res) {
-    const partyId = req.body.partyId
+    const {partyId, start} = req.body
     if (!partyId) {
         return res.status(400).json({ error: "Missing party ID" })
     }
@@ -17,7 +17,7 @@ async function addElementForParty(req, res) {
     const fileContent = await getFile(filePath)
     const trackInfo = Object.assign(new TrackInfo(), JSON.parse(fileContent.toString()))
     const party = trackInfo.getParty(partyId)
-    const timelineElement = new TimelineElement(Date.now(), partyId, req.body.start)
+    const timelineElement = new TimelineElement(Date.now(), partyId, start)
     if (!trackInfo.canAddToTimeline(party, timelineElement)) {
         return res.status(400).json({ error: "Timeline element overlaps with existing elements" })
     }

@@ -51,6 +51,7 @@
         {party}
         {index}
         on:party-deleted={() => dispatch("party-changed")}
+        on:element-added={() => dispatch("party-changed")}
       />
     {/each}
     <!-- svelte-ignore a11y_click_events_have_key_events -->

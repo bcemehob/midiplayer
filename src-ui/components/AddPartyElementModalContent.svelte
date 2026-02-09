@@ -7,8 +7,7 @@
     <h5>Add Party</h5>
 
     <div>start: {currentPayload.start}</div>
-    <div>name: {currentPayload.name}</div>
-    <div>duration: {currentPayload.duration}</div>
+    <div>partyId: {currentPayload.partyId}</div>
   </div>
 
   <div class="right">
