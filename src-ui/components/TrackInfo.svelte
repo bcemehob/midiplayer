@@ -40,9 +40,10 @@
   <TrackParties
     parties={rawParties.parties}
     {index}
-    {track}
+    {track} 
     on:party-changed={loadTrack}
   />
+  {#key partyElements}
   <TrackPartyElements
     on:element-changed={loadTrack}
     {partyElements}
@@ -50,4 +51,5 @@
     {track}
     parties={rawParties.parties}
   />
+  {/key}
 {/if}
