@@ -5,8 +5,11 @@
       "name": "Frontend (Vite)",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": [
+        "-c",
+        "source ~/.nvm/nvm.sh && npm run dev"
+      ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -14,7 +17,11 @@
       "name": "Backend (Node)",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/script.js",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": [
+        "-c",
+        "source ~/.nvm/nvm.sh && node ${workspaceFolder}/script.js"
+      ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     }
@@ -22,7 +29,10 @@
   "compounds": [
     {
       "name": "Run Frontend + Backend",
-      "configurations": ["Frontend (Vite)", "Backend (Node)"]
+      "configurations": [
+        "Frontend (Vite)",
+        "Backend (Node)"
+      ]
     }
   ]
 }
