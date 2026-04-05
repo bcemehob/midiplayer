@@ -32,7 +32,7 @@
     }
     isModalOpen = true
   }
-  
+
   async function savePartyElement() {
     await fetch(`/api/track/${index}`, {
       method: "POST",
@@ -41,11 +41,10 @@
     })
     dispatch("party-changed")
   }
-
 </script>
 
-{#if parties}
-  <div class="parties">
+<div class="parties">
+  {#if parties}
     {#each parties as party}
       <Party
         {party}
@@ -54,11 +53,12 @@
         on:element-added={() => dispatch("party-changed")}
       />
     {/each}
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <div class="add-party" on:click={initSaveParty}>+</div>
-  </div>
-{/if}
+  {/if}
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div class="add-party" on:click={initSaveParty}>+</div>
+</div>
+
 <Modal
   isOpen={isModalOpen}
   close={closeModal}
