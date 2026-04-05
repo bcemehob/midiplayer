@@ -6,13 +6,10 @@
   import { latestStartTick } from "../store"
   import { createEventDispatcher } from "svelte"
 
-  export let index
-  export let track
-  export let parties
-  export let partyElements
+  let { index, track, parties, partyElements } = $props()
 
-  let isModalOpen = false
-  let currentPayload
+  let isModalOpen = $state(false)
+  let currentPayload = $state(undefined)
   const dispatch = createEventDispatcher()
 
   function closeModal() {
