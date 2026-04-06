@@ -4,18 +4,14 @@
   import TrackParties from "./TrackParties.svelte"
   import TrackPartyElements from "./TrackPartyElements.svelte"
 
-  export let index
-  export let track
+  let { index, track } = $props()
 
-  let rawParties
-  let partyElements
-  let isModalOpen = false
+  let rawParties = $state(undefined)
+  let partyElements = $derived(rawParties?.timeline?.map(partyElementView) || [])
 
   onMount(() => {
     loadTrack()
   })
-
-  $: partyElements = rawParties?.timeline?.map(partyElementView) || []
 
   async function loadTrack() {
     const res = await fetch(`/api/track/${index}`)
